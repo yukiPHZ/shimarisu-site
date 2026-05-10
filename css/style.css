@@ -415,15 +415,15 @@ footer {
 .dake-hero {
   display: flex;
   align-items: center;
-  gap: 22px;
+  gap: 20px;
   flex-wrap: nowrap;
   margin-bottom: 42px;
 }
 
 .dake-symbol {
-  width: 72px;
-  height: 72px;
-  opacity: 0.96;
+  width: 60px;
+  height: 60px;
+  opacity: 0.82;
 }
 
 .dake-symbol img {
@@ -434,6 +434,49 @@ footer {
 
 .dake-hero-text {
   flex: 1;
+}
+
+.dake-section {
+  padding: 24px 0;
+}
+
+.dake-card-grid {
+  gap: 18px;
+}
+
+.dake-card {
+  box-shadow: none;
+  margin-bottom: 0;
+}
+
+.dake-card h3 {
+  font-size: 18px;
+}
+
+.dake-intro p {
+  max-width: 720px;
+}
+
+.dake-principles .list {
+  columns: 2;
+  column-gap: 36px;
+}
+
+.dake-cta {
+  background: var(--white);
+  color: var(--text);
+  border: 1px solid var(--line);
+  box-shadow: none;
+}
+
+.dake-cta p {
+  color: var(--muted);
+}
+
+.dake-cta .btn {
+  background: var(--text);
+  color: var(--white);
+  border-color: var(--text);
 }
 
 /* ===================== */
@@ -693,11 +736,24 @@ footer {
 
   .dake-hero {
     align-items: flex-start;
-    gap: 14px;
+    gap: 12px;
   }
 
   .dake-symbol {
-    width: 56px;
-    height: 56px;
+    width: 44px;
+    height: 44px;
+    flex: 0 0 44px;
+  }
+
+  .dake-section {
+    padding: 18px 0;
+  }
+
+  .dake-card h3 {
+    font-size: 17px;
+  }
+
+  .dake-principles .list {
+    columns: 1;
   }
 }
