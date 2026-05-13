@@ -11,10 +11,23 @@
 ## 技術構成
 
 - 静的 HTML / CSS
-- 主要ページ: `index.html`, `about.html`, `kaitori.html`, `dake.html`, `contact.html`
-- CSS: `css/style.css`
-- 画像: `images/`
+- Cloudflare Pages 公開対象: `public/`
+- 主要ページ: `public/index.html`, `public/about.html`, `public/kaitori.html`, `public/dake.html`, `public/contact.html`
+- CSS: `public/css/style.css`
+- 画像: `public/images/`
+- Cloudflare Pages Build output directory: `public`
+- Cloudflare 設定: `wrangler.toml`
 - Cloudflare Pages で静的公開
+
+## Cloudflare Pages移行メモ
+
+- Cloudflare Pages project name: `shimarisu-site`
+- Build command: none / 空欄
+- Build output directory: `public`
+- Production branch: `main`
+- 2026-05-13時点のdeploy Failure / 522は、Cloudflare側が `public` を見ている一方でrepo側に `public/` がなかったことが主因候補。
+- 今回は作業前からの未コミット変更を混ぜないため、root直下の既存ファイルは削除せず、HEAD時点の静的公開ファイルを `public/` に複製している。
+- root直下の整理・削除は、既存未コミット変更を確定または退避してから別フェーズで行う。
 
 ## 触ってよい範囲
 
@@ -35,7 +48,7 @@
 1. 変更前にこの README を読む。
 2. `git status` で既存変更を確認する。
 3. 既存変更がある場合は内容を確認し、上書きしない。
-4. `git add . && git commit -m "Update shimarisu site"`
+4. 既存変更を混ぜないよう、対象ファイルだけ `git add` する。
 5. `git push origin main`
 6. Cloudflare Pages のデプロイ完了を確認する。
 
