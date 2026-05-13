@@ -31,7 +31,7 @@ body {
   font-weight: 400;
   background: var(--bg);
   color: var(--text);
-  line-height: 1.8;
+  line-height: 1.9;
 }
 
 a {
@@ -134,29 +134,38 @@ h1 {
   font-weight: 700;
   line-height: 1.4;
   letter-spacing: 0.02em;
+  text-wrap: pretty;
 }
 
 h2 {
   margin: 0 0 14px;
   font-size: 22px;
   font-weight: 700;
+  text-wrap: pretty;
 }
 
 h3 {
   margin: 0 0 10px;
   font-size: 20px;
   font-weight: 700;
+  text-wrap: pretty;
 }
 
 p {
   margin: 0;
+  max-width: 740px;
   font-weight: 400;
   color: var(--muted);
+  line-height: 1.9;
+  text-wrap: pretty;
 }
 
 .lead {
   margin-top: 20px;
-  font-size: 17px;
+  max-width: 620px;
+  color: #788391;
+  font-size: 16px;
+  line-height: 1.9;
 }
 
 .label {
@@ -176,6 +185,10 @@ p {
   border-radius: var(--radius);
   padding: 28px;
   margin-bottom: 24px;
+}
+
+.card p {
+  max-width: 600px;
 }
 
 .card-link {
@@ -371,7 +384,8 @@ p {
 
 .cta p {
   color: #d1d5db;
-  margin: 8px 0 26px;
+  margin: 8px auto 26px;
+  max-width: 680px;
 }
 
 .cta .btn {
@@ -447,6 +461,7 @@ footer {
 .dake-card {
   box-shadow: none;
   margin-bottom: 0;
+  padding: 24px;
 }
 
 .dake-card h3 {
@@ -454,7 +469,12 @@ footer {
 }
 
 .dake-intro p {
-  max-width: 720px;
+  max-width: 680px;
+}
+
+.dake-card p {
+  max-width: 100%;
+  line-height: 1.85;
 }
 
 .dake-principles .list {
@@ -470,6 +490,7 @@ footer {
 }
 
 .dake-cta p {
+  max-width: 620px;
   color: var(--muted);
 }
 
