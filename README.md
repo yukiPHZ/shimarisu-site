@@ -19,15 +19,21 @@
 - Cloudflare 設定: `wrangler.toml`
 - Cloudflare Pages で静的公開
 
-## Cloudflare Pages移行メモ
+## Cloudflare Pages
 
 - Cloudflare Pages project name: `shimarisu-site`
+- Custom domain: `shimarisu-fudosan.com`
 - Build command: none / 空欄
 - Build output directory: `public`
 - Production branch: `main`
 - 2026-05-13時点のdeploy Failure / 522は、Cloudflare側が `public` を見ている一方でrepo側に `public/` がなかったことが主因候補。
 - 今回は作業前からの未コミット変更を混ぜないため、root直下の既存ファイルは削除せず、HEAD時点の静的公開ファイルを `public/` に複製している。
 - root直下の整理・削除は、既存未コミット変更を確定または退避してから別フェーズで行う。
+
+## Source of truth
+
+This site uses `public/` as the production source for Cloudflare Pages.
+Root-level legacy files may remain temporarily during migration, but production files should be updated under `public/`.
 
 ## 触ってよい範囲
 
@@ -49,8 +55,9 @@
 2. `git status` で既存変更を確認する。
 3. 既存変更がある場合は内容を確認し、上書きしない。
 4. 既存変更を混ぜないよう、対象ファイルだけ `git add` する。
-5. `git push origin main`
-6. Cloudflare Pages のデプロイ完了を確認する。
+5. `git commit -m "Normalize Cloudflare Pages public structure"`
+6. `git push origin main`
+7. Cloudflare Pages のデプロイ完了を確認する。
 
 ## 次にやること
 
