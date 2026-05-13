@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://shimarisu-fudosan.com/</loc></url>
-  <url><loc>https://shimarisu-fudosan.com/about.html</loc></url>
-  <url><loc>https://shimarisu-fudosan.com/contact.html</loc></url>
-  <url><loc>https://shimarisu-fudosan.com/dake.html</loc></url>
-  <url><loc>https://shimarisu-fudosan.com/kaitori.html</loc></url>
+  <url><loc>https://shimarisu-fudosan.com/about</loc></url>
+  <url><loc>https://shimarisu-fudosan.com/contact</loc></url>
+  <url><loc>https://shimarisu-fudosan.com/dake</loc></url>
+  <url><loc>https://shimarisu-fudosan.com/kaitori</loc></url>
 </urlset>
