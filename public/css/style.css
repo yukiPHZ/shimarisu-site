@@ -482,11 +482,38 @@ footer {
   column-gap: 36px;
 }
 
+.dake-special {
+  margin: 0 0 70px;
+}
+
+.special-label {
+  margin-bottom: 8px;
+  color: #8a94a3;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.dake-special h2 {
+  margin-bottom: 4px;
+}
+
+.dake-special p {
+  max-width: 680px;
+}
+
+.special-subtitle {
+  margin-bottom: 12px;
+  color: var(--text);
+  font-weight: 600;
+}
+
 .dake-cta {
   background: var(--white);
   color: var(--text);
   border: 1px solid var(--line);
   box-shadow: none;
+  margin-bottom: 24px;
 }
 
 .dake-cta p {
@@ -623,6 +650,16 @@ footer {
     line-height: 1.68;
   }
 
+  h1,
+  h2,
+  h3,
+  p,
+  .list,
+  .card-link,
+  .btn {
+    overflow-wrap: anywhere;
+  }
+
   .lead {
     margin-top: 14px;
     font-size: 14px;
@@ -641,6 +678,7 @@ footer {
   .card {
     padding: 20px;
     margin-bottom: 14px;
+    min-width: 0;
   }
 
   .card-link {
@@ -680,6 +718,7 @@ footer {
     margin: 24px 0 34px;
     padding: 22px 18px;
     border-radius: 18px;
+    min-width: 0;
   }
 
   .cta h2 {
@@ -776,5 +815,13 @@ footer {
 
   .dake-principles .list {
     columns: 1;
+  }
+
+  .dake-cta {
+    margin-bottom: 14px;
+  }
+
+  .dake-special {
+    margin-bottom: 34px;
   }
 }
