@@ -77,3 +77,24 @@ Root-level legacy files may remain temporarily during migration, but production 
 - `robots.txt` の Sitemap URL が本番ドメインを指しているか確認する。
 - GitHub push後、Cloudflare反映後に `/sitemap.xml` と `/robots.txt` を確認する。
 - 生成する場合は `node scripts/generate-sitemap.js` を実行する。npm build化は不要。
+
+
+## DAKE_WEB_META
+
+```json
+{
+    "site_key":  "shimarisu-site",
+    "display_name":  "SHIMARISU Fudosan",
+    "repo_name":  "shimarisu-site",
+    "domain":  "shimarisu-fudosan.com",
+    "cloudflare_project":  "shimarisu-site",
+    "site_type":  "static",
+    "has_functions":  false,
+    "has_openai_api":  false,
+    "health_url":  "",
+    "production_url":  "https://shimarisu-fudosan.com",
+    "status":  "active",
+    "category":  "SHIMARISU",
+    "show_on_dashboard":  true
+}
+```
