@@ -2,8 +2,12 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://shimarisu-fudosan.com/</loc></url>
   <url><loc>https://shimarisu-fudosan.com/about</loc></url>
-  <url><loc>https://shimarisu-fudosan.com/contact</loc></url>
   <url><loc>https://shimarisu-fudosan.com/concept/</loc></url>
+  <url><loc>https://shimarisu-fudosan.com/contact</loc></url>
   <url><loc>https://shimarisu-fudosan.com/dake</loc></url>
-  <url><loc>https://shimarisu-fudosan.com/kaitori</loc></url>
+  <url><loc>https://shimarisu-fudosan.com/used-house/</loc></url>
+  <url><loc>https://shimarisu-fudosan.com/used-house/appraisal-check/</loc></url>
+  <url><loc>https://shimarisu-fudosan.com/used-house/boundary-marker/</loc></url>
+  <url><loc>https://shimarisu-fudosan.com/used-house/building-confirmation-inspection/</loc></url>
+  <url><loc>https://shimarisu-fudosan.com/used-house/extension-unregistered/</loc></url>
 </urlset>

@@ -60,6 +60,9 @@
     if (normalized.endsWith("/index.html")) {
       return `/${normalized.slice(0, -"index.html".length)}`;
     }
+    if (normalized.endsWith(".html")) {
+      return `/${normalized.slice(0, -".html".length)}`;
+    }
     return `/${normalized}`;
   }
 
