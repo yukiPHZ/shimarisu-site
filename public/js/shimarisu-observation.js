@@ -5,6 +5,13 @@
   const pageRoot = root.document && root.document.body;
   const runtimePackage = root.MarketObserverRuntimePackage || {};
   const profile = runtimePackage.profiles && runtimePackage.profiles[config.projectId];
+  const consentStatusText = {
+    granted: "アクセス解析：許可済み",
+    denied: "アクセス解析：利用しない",
+    unknown: "アクセス解析：未選択",
+    unavailable: "アクセス解析：利用しない",
+    gpc: "ブラウザのプライバシー設定により解析を無効にしています。",
+  };
 
   function actionToken(prefix) {
     if (root.crypto && typeof root.crypto.randomUUID === "function") return root.crypto.randomUUID();
@@ -14,6 +21,15 @@
   function consentState() {
     const consent = root.MarketObserverConsent;
     return consent && typeof consent.read === "function" ? consent.read().state : "unknown";
+  }
+
+  function updateConsentStatus(consent) {
+    const status = root.document && root.document.querySelector("#market-observer-consent-status");
+    if (!status || typeof consent.read !== "function") return;
+    const current = consent.read();
+    status.textContent = current.gpc
+      ? consentStatusText.gpc
+      : (consentStatusText[current.state] || consentStatusText.unknown);
   }
 
   function mountConsent() {
@@ -31,6 +47,7 @@
         ],
       },
     });
+    updateConsentStatus(consent);
   }
 
   function pageContext() {

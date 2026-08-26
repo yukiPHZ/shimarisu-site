@@ -24,8 +24,10 @@ test("all canonical pages install consent-safe Market Observer runtime", () => {
     const html = read(file);
     assert.match(html, /<body data-market-page="[a-z0-9_]+" data-market-content-type="[a-z0-9_]+">/, file);
     assert.match(html, /class="analytics-privacy"/, file);
-    assert.match(html, /id="market-observer-consent-allow"/, file);
-    assert.match(html, /id="market-observer-consent-deny"/, file);
+    assert.equal((html.match(/id="market-observer-consent-status"/g) || []).length, 1, file);
+    assert.doesNotMatch(html, /id="market-observer-consent-allow"/, file);
+    assert.doesNotMatch(html, /id="market-observer-consent-deny"/, file);
+    assert.doesNotMatch(html, /class="market-observer-consent-change"/, file);
     assert.match(html, /\/assets\/market-observer\/generated\/runtime-package\.js/, file);
     assert.match(html, /\/assets\/market-observer\/market-observer\.js/, file);
     assert.match(html, /\/assets\/market-observer\/consent-banner\.js/, file);
@@ -100,11 +102,20 @@ test("share integration emits only fixed success aliases", () => {
 
 test("adapter does not collect raw location or visible content", () => {
   const adapter = read("js/shimarisu-observation.js");
-  for (const forbidden of ["location.href", "location.search", "location.hash", "document.title", "textContent", "innerText", "navigator.clipboard"]) {
+  for (const forbidden of ["location.href", "location.search", "location.hash", "document.title", "innerText", "navigator.clipboard"]) {
     assert.equal(adapter.includes(forbidden), false, forbidden);
   }
+  assert.equal((adapter.match(/\.textContent/g) || []).length, 1);
+  assert.match(adapter, /status\.textContent = current\.gpc/);
   assert.match(adapter, /trackPageView\(page\)/);
   assert.match(adapter, /consentState\(\) !== "granted"/);
+});
+
+test("managed consent UI prevents duplicate banners and change controls", () => {
+  const consent = read("assets/market-observer/consent-banner.js");
+  assert.match(consent, /removeBanner\(document\);/);
+  assert.match(consent, /document\.querySelector\(`\.\$\{CHANGE_BUTTON_CLASS\}`\)/);
+  assert.match(consent, /ensureChangeControl\(options \|\| \{\}\)/);
 });
 
 function loadShare(options = {}) {
@@ -177,15 +188,19 @@ test("clipboard fallback copies canonical URL and emits fixed alias", async () =
   assert.equal(harness.status.textContent, "リンクをコピーしました。");
 });
 
-function loadAdapter(consentState) {
+function loadAdapter(consentState, options = {}) {
   const listeners = new Map();
   const calls = { init: [], pageView: [], track: [], mount: 0 };
+  const status = { textContent: "" };
   class Element {
     constructor(dataset = {}) { this.dataset = dataset; }
     closest(selector) { return selector === "[data-market-cta-id]" && this.dataset.marketCtaId ? this : null; }
   }
   const document = {
     body: { dataset: { marketPage: "used_house_road_access", marketContentType: "used_house_article" } },
+    querySelector(selector) {
+      return selector === "#market-observer-consent-status" ? status : null;
+    },
     addEventListener(type, listener) {
       if (!listeners.has(type)) listeners.set(type, []);
       listeners.get(type).push(listener);
@@ -208,7 +223,7 @@ function loadAdapter(consentState) {
       profileHashes: { shimarisu_fudosan: "profile-hash" },
     },
     MarketObserverConsent: {
-      read: () => ({ state: consentState }),
+      read: () => ({ state: consentState, gpc: options.gpc === true }),
       mount: () => { calls.mount += 1; },
     },
     MarketObserver: tracker,
@@ -216,7 +231,7 @@ function loadAdapter(consentState) {
   const context = { window, globalThis: window, Element, console, Date, Math };
   vm.createContext(context);
   vm.runInContext(read("js/shimarisu-observation.js"), context);
-  return { window, Element, listeners, calls };
+  return { window, Element, listeners, calls, status };
 }
 
 test("unknown, denied, and GPC-equivalent states do not initialize analytics", () => {
@@ -225,13 +240,26 @@ test("unknown, denied, and GPC-equivalent states do not initialize analytics", (
     assert.equal(harness.calls.mount, 1);
     assert.equal(harness.calls.init.length, 0);
     assert.equal(harness.calls.pageView.length, 0);
+    assert.equal(
+      harness.status.textContent,
+      state === "unknown" ? "アクセス解析：未選択" : "アクセス解析：利用しない",
+    );
   }
+});
+
+test("GPC keeps analytics disabled and reports the existing fail-closed state", () => {
+  const harness = loadAdapter("denied", { gpc: true });
+  assert.equal(harness.calls.mount, 1);
+  assert.equal(harness.calls.init.length, 0);
+  assert.equal(harness.calls.pageView.length, 0);
+  assert.equal(harness.status.textContent, "ブラウザのプライバシー設定により解析を無効にしています。");
 });
 
 test("granted sends one page_view and only approved CTA/share actions", () => {
   const harness = loadAdapter("granted");
   assert.equal(harness.calls.init.length, 1);
   assert.equal(harness.calls.pageView.length, 1);
+  assert.equal(harness.status.textContent, "アクセス解析：許可済み");
   assert.deepEqual(JSON.parse(JSON.stringify(harness.calls.pageView[0])), {
     route_id: "used_house_road_access",
     content_type: "used_house_article",
