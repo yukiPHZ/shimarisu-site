@@ -1,0 +1,35 @@
+# Keep Cloudflare-managed analytics out of consent-gated HTML.
+/
+  Cache-Control: no-transform
+/about
+  Cache-Control: no-transform
+/concept/
+  Cache-Control: no-transform
+/contact
+  Cache-Control: no-transform
+/dake
+  Cache-Control: no-transform
+/used-house/
+  Cache-Control: no-transform
+/used-house/appraisal-check/
+  Cache-Control: no-transform
+/used-house/boundary-marker/
+  Cache-Control: no-transform
+/used-house/building-confirmation-inspection/
+  Cache-Control: no-transform
+/used-house/development-history/
+  Cache-Control: no-transform
+/used-house/encroachment/
+  Cache-Control: no-transform
+/used-house/extension-unregistered/
+  Cache-Control: no-transform
+/used-house/private-road/
+  Cache-Control: no-transform
+/used-house/retaining-wall-cliff/
+  Cache-Control: no-transform
+/used-house/road-access/
+  Cache-Control: no-transform
+/used-house/underground-garage/
+  Cache-Control: no-transform
+/used-house/urbanization-control-area/
+  Cache-Control: no-transform

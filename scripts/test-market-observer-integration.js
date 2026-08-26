@@ -68,6 +68,18 @@ test("canonical routes and sitemap stay aligned at 17 URLs", () => {
   assert.deepEqual(canonicalUrls, sitemapUrls);
 });
 
+test("every canonical HTML route has site-scoped no-transform protection", () => {
+  const headers = fs.readFileSync(path.join(publicRoot, "_headers"), "utf8");
+  const protectedRoutes = [...headers.matchAll(/^([^#\s][^\r\n]*)\r?\n\s+Cache-Control: no-transform$/gm)]
+    .map((match) => match[1])
+    .sort();
+  const canonicalRoutes = htmlFiles.map((file) => {
+    const match = read(file).match(/<link rel="canonical" href="([^"]+)"/);
+    return new URL(match[1]).pathname;
+  }).sort();
+  assert.deepEqual(protectedRoutes, canonicalRoutes);
+});
+
 test("only approved CTA aliases are installed", () => {
   const combined = htmlFiles.map(read).join("\n");
   const ids = [...combined.matchAll(/data-market-cta-id="([a-z0-9_]+)"/g)].map((match) => match[1]);

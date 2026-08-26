@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-08-26T08:19:56Z",
+  "generated_at_utc": "2026-08-26T08:35:36Z",
   "managed_file_checksums": {
     "README.md": "d80b9659865b08859cf51e613716a91646299b948a49faaba835e957d5bf1402",
     "consent-banner.js": "7f9173c807838c909fec617649ea5933cd289cb5c15181324fc78e3eb10f0f74",
@@ -10,7 +10,7 @@
     "market-observer.js": "9fe7dc9020bd5a342b46b2b4c0f622ff25046f66ec73030dedb967c98f9e11de"
   },
   "manifest_checksum": "eb6708ab10059a757ea77d09ebce0c49526ff757ea23883487c393ab70bd798c",
-  "market_observer_commit": "d0ac0b8c344b11cddd2395b347a16d62d25d789a",
+  "market_observer_commit": "f315952956249922a5a5672306962bb1793e8176",
   "profile_checksums": {
     "shimarisu_fudosan": "6ac8bec79e17f547b52fdc757ca0bcbc565dbb00df5980079b8f1f0459f78469"
   },
@@ -22,6 +22,7 @@
   "runtime_version": "1.0.0",
   "schema_version": "1.0.0-lite",
   "site_file_checksums": {
+    "public/_headers": "44a34e38681ac5ccd721ece7f1a902c9e46712e405db9029068821c2f8f65d9e",
     "public/about.html": "53e5e8341bdcd707d95a0dc7a5a2d89c5060842a3f1ea26ac14e44a34bd85a3d",
     "public/concept/index.html": "8881291ad6cc653a7fa4262d8bdce09252aa44546da220a82f0a5929be828891",
     "public/contact.html": "195a2d163065477fbd2128d3308fa87dbb31fd84b9244c94b9fddcd2b0a34e8d",
