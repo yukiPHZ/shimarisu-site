@@ -1,0 +1,23 @@
+{
+  "_notice": "Generated from 00_core canonical YAML. Do not edit by hand.",
+  "artifacts": {
+    "runtime_schema": {
+      "path": "generated/runtime_schema.json",
+      "sha256": "8c1dd73e7eebfb5aa569025644efd6473feac120f7b4a5f51f2b58febfbce8db"
+    },
+    "shimarisu_fudosan_profile": {
+      "path": "generated/shimarisu_fudosan.profile.json",
+      "sha256": "6ac8bec79e17f547b52fdc757ca0bcbc565dbb00df5980079b8f1f0459f78469"
+    }
+  },
+  "schema_version": "1.0.0-phase1a-revision",
+  "source_files": [
+    "00_core/project_registry.yaml",
+    "00_core/client_event_dictionary.yaml",
+    "00_core/parameter_dictionary.yaml",
+    "00_core/surface_dictionary.yaml",
+    "00_core/utm_taxonomy.yaml",
+    "00_core/ga4_custom_definitions.yaml",
+    "00_core/data_state_dictionary.yaml"
+  ]
+}

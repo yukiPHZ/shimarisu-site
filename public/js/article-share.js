@@ -1,6 +1,12 @@
 (() => {
   const shareAreas = document.querySelectorAll("[data-article-share]");
 
+  const notifyShareSuccess = (shareTarget) => {
+    document.dispatchEvent(new CustomEvent("shimarisu:article-share-success", {
+      detail: { shareTarget },
+    }));
+  };
+
   const copyCanonicalUrl = async (url) => {
     if (navigator.clipboard?.writeText) {
       await navigator.clipboard.writeText(url);
@@ -41,11 +47,13 @@
             text: document.title,
             url: canonical,
           });
+          notifyShareSuccess("os_share");
           return;
         }
 
         await copyCanonicalUrl(canonical);
         status.textContent = "リンクをコピーしました。";
+        notifyShareSuccess("clipboard");
       } catch (error) {
         if (error?.name !== "AbortError") {
           status.textContent = "共有できませんでした。";

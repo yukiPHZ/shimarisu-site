@@ -38,8 +38,13 @@
   }
   </script>
   <script src="/js/article-share.js" defer></script>
+  <script src="/assets/market-observer/generated/runtime-package.js" defer></script>
+  <script src="/assets/market-observer/market-observer.js" defer></script>
+  <script src="/assets/market-observer/consent-banner.js" defer></script>
+  <script src="/js/shimarisu-market-observer.config.js" defer></script>
+  <script src="/js/shimarisu-observation.js" defer></script>
 </head>
-<body>
+<body data-market-page="used_house_building_confirmation_inspection" data-market-content-type="used_house_article">
 <header><div class="wrap header-inner"><a class="logo" href="/" aria-label="しまりす不動産 トップへ"><span class="logo-mark"><img src="/images/shimarisu-logo.png" alt="" /></span><span class="logo-text">しまりす不動産</span></a><nav aria-label="メインナビゲーション"><a href="/used-house/">中古戸建</a><a href="/dake">DAKE</a><a href="/about">プロフィール</a><a href="/contact">お問い合わせ</a></nav></div></header>
 
 <main class="page-main">
@@ -96,7 +101,7 @@
 
     <section class="article-section"><h2>仲介業者の方へ</h2><p>紙がない段階で取引可否を決めず、確認済証と検査済証を分けてヒアリングし、必要なら所在地の行政窓口で記録を確認します。査定時点で全記録を取得する必要があるかは、案件の進み方に合わせて判断します。</p></section>
 
-    <aside class="author-note author-note--portrait"><img class="author-photo" src="/images/kikuta.jpg" alt="菊田幸彦" width="64" height="64"><div><h2>執筆・確認：<a href="/about">菊田幸彦</a></h2><p>不動産売買の実務に携わる菊田幸彦が、個人の経験と公的資料をもとに整理しています。</p></div></aside>
+    <aside class="author-note author-note--portrait"><img class="author-photo" src="/images/kikuta.jpg" alt="菊田幸彦" width="64" height="64"><div><h2>執筆・確認：<a href="/about" data-market-cta-id="author_profile" data-market-cta-group="article_author">菊田幸彦</a></h2><p>不動産売買の実務に携わる菊田幸彦が、個人の経験と公的資料をもとに整理しています。</p></div></aside>
 
     <section class="article-section"><h2>一次資料・自治体での確認先</h2><ul class="source-list">
       <li><a href="https://www.mlit.go.jp/kozogiso/051216/03-3.pdf" target="_blank" rel="noopener">国土交通省「建築工事と手続の流れ」</a></li>
@@ -119,6 +124,21 @@
   </article>
 </main>
 
-<footer><div class="wrap footer-inner"><div>© 2026 しまりす不動産 — Vibe-coded by Yukihiko Kikuta</div><div class="footer-links"><a href="/used-house/">中古戸建</a><a href="/dake">DAKE</a><a href="/about">プロフィール</a><a href="/contact">お問い合わせ</a><a href="https://sakurayk.notion.site/22ea54b5298d80928443ec7b4d20143d" target="_blank" rel="noopener" aria-label="株式会社さくら都市での戸建買取査定">戸建買取査定</a><a href="https://www.instagram.com/kikuta.shimarisu_fudosan" target="_blank" rel="noopener">Instagram</a></div></div></footer>
+<footer><div class="wrap footer-inner"><div>© 2026 しまりす不動産 — Vibe-coded by Yukihiko Kikuta</div><div class="footer-links"><a href="/used-house/">中古戸建</a><a href="/dake">DAKE</a><a href="/about">プロフィール</a><a href="/contact">お問い合わせ</a><a href="https://sakurayk.notion.site/22ea54b5298d80928443ec7b4d20143d" target="_blank" rel="noopener" aria-label="株式会社さくら都市での戸建買取査定" data-market-cta-id="kaitori_footer" data-market-cta-group="footer">戸建買取査定</a><a href="https://www.instagram.com/kikuta.shimarisu_fudosan" target="_blank" rel="noopener">Instagram</a></div></div>
+  <div class="wrap">
+    <details class="analytics-privacy">
+      <summary>Analytics privacy</summary>
+      <div class="analytics-privacy-body">
+        <p>初期状態では解析しません。許可された場合だけ、ページ表示、記事共有、著者プロフィール、個人サイト、戸建買取査定への導線を固定aliasで計測します。</p>
+        <p>住所、raw URL、query、hash、本文、記事タイトル、共有内容、clipboard、入力内容、個人情報は送信しません。</p>
+        <div class="analytics-privacy-actions">
+          <span id="market-observer-consent-status" role="status" aria-live="polite"></span>
+          <button id="market-observer-consent-allow" type="button">許可する</button>
+          <button id="market-observer-consent-deny" type="button">許可しない</button>
+        </div>
+      </div>
+    </details>
+  </div>
+</footer>
 </body>
 </html>

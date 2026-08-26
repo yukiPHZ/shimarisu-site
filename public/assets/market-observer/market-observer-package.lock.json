@@ -1,0 +1,49 @@
+{
+  "generated_at_utc": "2026-08-26T08:19:56Z",
+  "managed_file_checksums": {
+    "README.md": "d80b9659865b08859cf51e613716a91646299b948a49faaba835e957d5bf1402",
+    "consent-banner.js": "7f9173c807838c909fec617649ea5933cd289cb5c15181324fc78e3eb10f0f74",
+    "generated/manifest.json": "eb6708ab10059a757ea77d09ebce0c49526ff757ea23883487c393ab70bd798c",
+    "generated/runtime-package.js": "53236fa7bf6d17f26894db5dde9e10e699b96496937925e4efdb8dc9c9606eab",
+    "generated/runtime_schema.json": "8c1dd73e7eebfb5aa569025644efd6473feac120f7b4a5f51f2b58febfbce8db",
+    "generated/shimarisu_fudosan.profile.json": "6ac8bec79e17f547b52fdc757ca0bcbc565dbb00df5980079b8f1f0459f78469",
+    "market-observer.js": "9fe7dc9020bd5a342b46b2b4c0f622ff25046f66ec73030dedb967c98f9e11de"
+  },
+  "manifest_checksum": "eb6708ab10059a757ea77d09ebce0c49526ff757ea23883487c393ab70bd798c",
+  "market_observer_commit": "d0ac0b8c344b11cddd2395b347a16d62d25d789a",
+  "profile_checksums": {
+    "shimarisu_fudosan": "6ac8bec79e17f547b52fdc757ca0bcbc565dbb00df5980079b8f1f0459f78469"
+  },
+  "project_ids": [
+    "shimarisu_fudosan"
+  ],
+  "repository": "yukiPHZ/shimarisu-site",
+  "runtime_checksum": "9fe7dc9020bd5a342b46b2b4c0f622ff25046f66ec73030dedb967c98f9e11de",
+  "runtime_version": "1.0.0",
+  "schema_version": "1.0.0-lite",
+  "site_file_checksums": {
+    "public/about.html": "53e5e8341bdcd707d95a0dc7a5a2d89c5060842a3f1ea26ac14e44a34bd85a3d",
+    "public/concept/index.html": "8881291ad6cc653a7fa4262d8bdce09252aa44546da220a82f0a5929be828891",
+    "public/contact.html": "195a2d163065477fbd2128d3308fa87dbb31fd84b9244c94b9fddcd2b0a34e8d",
+    "public/css/style.css": "a2e95de67955fac2a8ea0b78c37c408d54c899e04dbf33fe19b450ee9d76ffff",
+    "public/dake.html": "9e88f4483fda159b61a7bcd261d15c39d5efe3efbb8474e96d3ddf5d694a46c2",
+    "public/index.html": "b1e9c7777c5558afb555c74603e7ee768df8bc5311e43f2c5b159c54cb09eece",
+    "public/js/article-share.js": "1097c0cceeabe306fb9fb6e50d2e8d71092d90752704eb03b60e666b13f9f88f",
+    "public/js/shimarisu-market-observer.config.js": "d9055eb0d6be2bb54f08b36254be5895a2b6d0342a3f0b779940f589ab6a2ec6",
+    "public/js/shimarisu-observation.js": "97f608096da36aed3786079cd627521a6fabc2782a66c739e75ea3cd006b8d57",
+    "public/used-house/appraisal-check/index.html": "a18c27df85ea3fccebd1b63e51fa540a1a96f96fd23d00a1fe0db55cadba3842",
+    "public/used-house/boundary-marker/index.html": "0b0eedfce6c750c3906bd14722e2a1eb3356eef395ca963d09e54fe0be849565",
+    "public/used-house/building-confirmation-inspection/index.html": "38a52494bfc67af06b2df6089afe9095d10f93a88b155b044a049fd9ae6bf787",
+    "public/used-house/development-history/index.html": "388a8ee6575ef9a8f81e2118eb7a62682085c12c0b8ca072f8e2ebb89eefdb29",
+    "public/used-house/encroachment/index.html": "64b4ba31a56c14ca7ad5f0eb92741325e884bcf082ceeddb88ac162ec64d451a",
+    "public/used-house/extension-unregistered/index.html": "71437345a50efd9ae82d4c1d5c6de6412742eb7567215f71c9ee5003e47f3ba4",
+    "public/used-house/index.html": "37b453fbbb029aa5bc304e3773f38d9b246ac83cc7f7ce58965091658568a550",
+    "public/used-house/private-road/index.html": "c1c3984b1e3b7a88d10f24ebcea1d4e0ee905662fab6c6f92a5d56dc4665d0d9",
+    "public/used-house/retaining-wall-cliff/index.html": "39ba92677e95edec5b2d4df3e47b7c0f6987f0580e9621b2566c7a6e079cc425",
+    "public/used-house/road-access/index.html": "790a48ace06aa9eaf69ed0f33724ac350894f03ce86013436c43cf0e5439952b",
+    "public/used-house/underground-garage/index.html": "d704372ee2863dfd682d541c68fbb2938af3cb45d54c959f840a5f7aae2f9b6c",
+    "public/used-house/urbanization-control-area/index.html": "d4c21a8e1daa7c8ea04f4b0210739cc453aafa463b44c048338134997481ef82"
+  },
+  "site_local_overrides": [],
+  "target_id": "shimarisu_site"
+}

@@ -60,6 +60,54 @@ header {
   border-bottom: 1px solid rgba(229, 231, 235, 0.8);
 }
 
+.analytics-privacy {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.analytics-privacy summary {
+  width: fit-content;
+  cursor: pointer;
+  color: var(--text);
+}
+
+.analytics-privacy-body {
+  max-width: 720px;
+  padding-top: 10px;
+  line-height: 1.8;
+}
+
+.analytics-privacy-body p {
+  margin: 0 0 8px;
+}
+
+.analytics-privacy-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+#market-observer-consent-status {
+  flex-basis: 100%;
+}
+
+body .market-observer-consent-banner {
+  --mo-consent-allow-bg: var(--accent);
+  --mo-consent-allow-hover-bg: #2458c2;
+  --mo-consent-deny-border: var(--line);
+  --mo-consent-focus-ring: var(--accent);
+  border-color: var(--line);
+  border-radius: 6px;
+  background: var(--white);
+  color: var(--text);
+  box-shadow: 0 12px 32px rgba(55, 49, 38, 0.14);
+}
+
 .header-inner {
   display: flex;
   align-items: center;
