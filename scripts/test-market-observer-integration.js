@@ -32,7 +32,7 @@ test("all canonical pages install consent-safe Market Observer runtime", () => {
     assert.match(html, /\/assets\/market-observer\/market-observer\.js/, file);
     assert.match(html, /\/assets\/market-observer\/consent-banner\.js/, file);
     assert.match(html, /\/js\/shimarisu-market-observer\.config\.js/, file);
-    assert.match(html, /\/js\/shimarisu-observation\.js/, file);
+    assert.match(html, /\/js\/shimarisu-observation\.js\?v=20260826-consent-ui/, file);
   }
 });
 
