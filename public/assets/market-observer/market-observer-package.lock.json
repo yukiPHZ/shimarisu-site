@@ -1,18 +1,18 @@
 {
-  "generated_at_utc": "2026-08-26T08:46:11Z",
+  "generated_at_utc": "2026-08-30T09:21:05Z",
   "managed_file_checksums": {
     "README.md": "d80b9659865b08859cf51e613716a91646299b948a49faaba835e957d5bf1402",
     "consent-banner.js": "7f9173c807838c909fec617649ea5933cd289cb5c15181324fc78e3eb10f0f74",
-    "generated/manifest.json": "eb6708ab10059a757ea77d09ebce0c49526ff757ea23883487c393ab70bd798c",
-    "generated/runtime-package.js": "53236fa7bf6d17f26894db5dde9e10e699b96496937925e4efdb8dc9c9606eab",
-    "generated/runtime_schema.json": "8c1dd73e7eebfb5aa569025644efd6473feac120f7b4a5f51f2b58febfbce8db",
-    "generated/shimarisu_fudosan.profile.json": "6ac8bec79e17f547b52fdc757ca0bcbc565dbb00df5980079b8f1f0459f78469",
+    "generated/manifest.json": "4a8630a80412fde7e1ce5142e2c6b8a755c71ca0944e25dee56cb42795a99ae8",
+    "generated/runtime-package.js": "611d9d164b3edf45b8b86d3d1c40f4b9ad7e76e13aafef3b018d9bf5de64a865",
+    "generated/runtime_schema.json": "3f557f6d7276768ef5c4a50f9be99b9aba171fcb0ced299db51cb74d0713e55a",
+    "generated/shimarisu_fudosan.profile.json": "12bb4f0cd902b4e6a1f08d4fd9613b736a9cf1f45134a29dfcd27f33445b041d",
     "market-observer.js": "9fe7dc9020bd5a342b46b2b4c0f622ff25046f66ec73030dedb967c98f9e11de"
   },
-  "manifest_checksum": "eb6708ab10059a757ea77d09ebce0c49526ff757ea23883487c393ab70bd798c",
-  "market_observer_commit": "04bade2e8b8f636505c18f597eb32a350ad6be17",
+  "manifest_checksum": "4a8630a80412fde7e1ce5142e2c6b8a755c71ca0944e25dee56cb42795a99ae8",
+  "market_observer_commit": "e2bdec18cc28a6ba0ab6ae242df690301a48d919",
   "profile_checksums": {
-    "shimarisu_fudosan": "6ac8bec79e17f547b52fdc757ca0bcbc565dbb00df5980079b8f1f0459f78469"
+    "shimarisu_fudosan": "12bb4f0cd902b4e6a1f08d4fd9613b736a9cf1f45134a29dfcd27f33445b041d"
   },
   "project_ids": [
     "shimarisu_fudosan"
@@ -22,7 +22,7 @@
   "runtime_version": "1.0.0",
   "schema_version": "1.0.0-lite",
   "site_file_checksums": {
-    "public/_headers": "963d2a2c3e561dd58517208f2afd6cec1b693aa426046d95b71ffad8ba79e60a",
+    "public/_headers": "585a413d5eabb81587c05d2b69e72866bbdd7ab6c0911c5e0ac8656e2f04deb8",
     "public/about.html": "beec859bc83d766ac4112880133c8d76091d75f2a9e2cc0e6166e86cf9576040",
     "public/concept/index.html": "64a468f6e0985c0461a2bafee31992f8c17c7a26fa7279b265cc5895ef076ebc",
     "public/contact.html": "b974593e6c724e0dc5ae751360f5bd6abab2f222e87fdfd65a584977362414db",
@@ -38,12 +38,19 @@
     "public/used-house/development-history/index.html": "5dc4b77f163057e56cfc218024ae127151f176c4574840d883c97c03d3e8bdb3",
     "public/used-house/encroachment/index.html": "a1aaf25ad14dcf5a150fb48ef3311dbc728c642b68a4b503aa0a8ce9a96325c2",
     "public/used-house/extension-unregistered/index.html": "00e48cedecf4e5252be2d4d9d1f38bd4c3536bcf4206dec74df439a42ee6c48a",
-    "public/used-house/index.html": "90a8e5d267bdfc6e9ba0ffce2b2e28ee74c53556c8ecdd51ef7201e71a324a14",
+    "public/used-house/index.html": "efbae39953b023e3b754ee7df78cd9059a1965547aa7fbde1d146735de4e961e",
     "public/used-house/private-road/index.html": "3caae4f959d7d467d466e56f6982f5bd114c7aba6cfc1a6c199f3854af6ecfaa",
     "public/used-house/retaining-wall-cliff/index.html": "44bfe2d8fdf649ba240a0abf4763995a571c73f6ea8587316efe692361391c95",
     "public/used-house/road-access/index.html": "05ee38fdc2b01f22dcf92de61ce145f10d7d3111b73d794a366cd45a160e14fb",
     "public/used-house/underground-garage/index.html": "fe23fc983a5b74d362f8560266295995cdd58a5e668f2ddd6f8fbc7fddc03e8a",
-    "public/used-house/urbanization-control-area/index.html": "e9d109b89882e8df4dc51c8b6a452b12762fcfd5b753858dc67e6804de591b18"
+    "public/used-house/urbanization-control-area/index.html": "e9d109b89882e8df4dc51c8b6a452b12762fcfd5b753858dc67e6804de591b18",
+    "public/vacant-house/index.html": "31c902073dd72ac8aa924f7c6a0d5c4d266894db8104b8119e5171ffdecb22e3",
+    "public/vacant-house/inherited-house-before-sale/index.html": "fe54bbe09613a6c02f51564191a2e9b1e124db784c5e9877ed24c681410e86ff",
+    "public/vacant-house/kanri-fuzen-tokutei/index.html": "39fd8566460ef782a0cd42f4878f2d7c60acf97ec5c3a306c240f5d8b7c378c1",
+    "public/vacant-house/leave-unmanaged/index.html": "c8212d5006f45f54e660a4ced50f15cb73bbaa7b4f60e497725c4377e29d55b0",
+    "public/vacant-house/property-tax/index.html": "776bdad9564053c863c3e0afbf8ebaebe33e97dcced71095de5eb60322074cd3",
+    "public/vacant-house/remaining-items/index.html": "5daa6852b12ed149b09f53d1bc2f608ae8f9314e5fb87303ddef6c2b09530ed1",
+    "public/vacant-house/sell-as-is/index.html": "b7c28826bdcfc228e84f6bb24d4029d18a8d04e2271dcf77957fdaaf5ed0d44f"
   },
   "site_local_overrides": [],
   "target_id": "shimarisu_site"

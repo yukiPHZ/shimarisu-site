@@ -33,3 +33,17 @@
   Cache-Control: no-transform
 /used-house/urbanization-control-area/
   Cache-Control: no-transform
+/vacant-house/
+  Cache-Control: no-transform
+/vacant-house/inherited-house-before-sale/
+  Cache-Control: no-transform
+/vacant-house/kanri-fuzen-tokutei/
+  Cache-Control: no-transform
+/vacant-house/leave-unmanaged/
+  Cache-Control: no-transform
+/vacant-house/property-tax/
+  Cache-Control: no-transform
+/vacant-house/remaining-items/
+  Cache-Control: no-transform
+/vacant-house/sell-as-is/
+  Cache-Control: no-transform

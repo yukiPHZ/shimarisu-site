@@ -3,11 +3,11 @@
   "artifacts": {
     "runtime_schema": {
       "path": "generated/runtime_schema.json",
-      "sha256": "8c1dd73e7eebfb5aa569025644efd6473feac120f7b4a5f51f2b58febfbce8db"
+      "sha256": "3f557f6d7276768ef5c4a50f9be99b9aba171fcb0ced299db51cb74d0713e55a"
     },
     "shimarisu_fudosan_profile": {
       "path": "generated/shimarisu_fudosan.profile.json",
-      "sha256": "6ac8bec79e17f547b52fdc757ca0bcbc565dbb00df5980079b8f1f0459f78469"
+      "sha256": "12bb4f0cd902b4e6a1f08d4fd9613b736a9cf1f45134a29dfcd27f33445b041d"
     }
   },
   "schema_version": "1.0.0-phase1a-revision",

@@ -14,12 +14,24 @@ const htmlFiles = [
   "used-house/private-road/index.html", "used-house/retaining-wall-cliff/index.html",
   "used-house/road-access/index.html", "used-house/underground-garage/index.html",
   "used-house/urbanization-control-area/index.html",
+  "vacant-house/index.html", "vacant-house/inherited-house-before-sale/index.html",
+  "vacant-house/kanri-fuzen-tokutei/index.html", "vacant-house/leave-unmanaged/index.html",
+  "vacant-house/property-tax/index.html", "vacant-house/remaining-items/index.html",
+  "vacant-house/sell-as-is/index.html",
 ];
 
 const read = (relativePath) => fs.readFileSync(path.join(publicRoot, relativePath), "utf8");
+const vacantArticleFiles = [
+  "vacant-house/inherited-house-before-sale/index.html",
+  "vacant-house/kanri-fuzen-tokutei/index.html",
+  "vacant-house/leave-unmanaged/index.html",
+  "vacant-house/property-tax/index.html",
+  "vacant-house/remaining-items/index.html",
+  "vacant-house/sell-as-is/index.html",
+];
 
 test("all canonical pages install consent-safe Market Observer runtime", () => {
-  assert.equal(htmlFiles.length, 17);
+  assert.equal(htmlFiles.length, 24);
   for (const file of htmlFiles) {
     const html = read(file);
     assert.match(html, /<body data-market-page="[a-z0-9_]+" data-market-content-type="[a-z0-9_]+">/, file);
@@ -57,7 +69,7 @@ test("all local links and assets resolve inside public", () => {
   assert.deepEqual(missing, []);
 });
 
-test("canonical routes and sitemap stay aligned at 17 URLs", () => {
+test("canonical routes and sitemap stay aligned at 24 URLs", () => {
   const canonicalUrls = htmlFiles.map((file) => {
     const match = read(file).match(/<link rel="canonical" href="([^"]+)"/);
     assert.ok(match, file);
@@ -66,7 +78,7 @@ test("canonical routes and sitemap stay aligned at 17 URLs", () => {
   const sitemapUrls = [...fs.readFileSync(path.join(publicRoot, "sitemap.xml"), "utf8").matchAll(/<loc>([^<]+)<\/loc>/g)]
     .map((match) => match[1])
     .sort();
-  assert.equal(new Set(canonicalUrls).size, 17);
+  assert.equal(new Set(canonicalUrls).size, 24);
   assert.deepEqual(canonicalUrls, sitemapUrls);
 });
 
@@ -82,14 +94,38 @@ test("every canonical HTML route has site-scoped no-transform protection", () =>
   assert.deepEqual(protectedRoutes, canonicalRoutes);
 });
 
+test("vacant-house pages keep valid schema and the existing author identity", () => {
+  const hubSchema = JSON.parse(read("vacant-house/index.html").match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1]);
+  assert.ok(hubSchema["@graph"].some((entry) => entry["@type"] === "CollectionPage"));
+
+  for (const file of vacantArticleFiles) {
+    const html = read(file);
+    const schema = JSON.parse(html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1]);
+    const article = schema["@graph"].find((entry) => entry["@type"] === "Article");
+    assert.ok(article, file);
+    assert.equal(article.author["@id"], "https://shimarisu-fudosan.com/about#person", file);
+    assert.equal(article.mainEntityOfPage, html.match(/<link rel="canonical" href="([^"]+)"/)[1], file);
+    assert.ok(schema["@graph"].some((entry) => entry["@type"] === "BreadcrumbList"), file);
+    assert.equal((html.match(/data-article-share/g) || []).length, 1, file);
+  }
+});
+
+test("vacant-house cluster does not introduce a direct sales CTA", () => {
+  for (const file of ["vacant-house/index.html", ...vacantArticleFiles]) {
+    const html = read(file);
+    assert.equal((html.match(/sakurayk\.notion\.site/g) || []).length, 1, file);
+    assert.doesNotMatch(html, /査定はこちら|今すぐ相談|空き家買取を依頼|残置物あり買取/, file);
+  }
+});
+
 test("only approved CTA aliases are installed", () => {
   const combined = htmlFiles.map(read).join("\n");
   const ids = [...combined.matchAll(/data-market-cta-id="([a-z0-9_]+)"/g)].map((match) => match[1]);
   assert.deepEqual(new Set(ids), new Set(["author_profile", "personal_site", "kaitori_contact", "kaitori_footer"]));
-  assert.equal(ids.filter((id) => id === "author_profile").length, 11);
+  assert.equal(ids.filter((id) => id === "author_profile").length, 17);
   assert.equal(ids.filter((id) => id === "personal_site").length, 1);
   assert.equal(ids.filter((id) => id === "kaitori_contact").length, 1);
-  assert.equal(ids.filter((id) => id === "kaitori_footer").length, 17);
+  assert.equal(ids.filter((id) => id === "kaitori_footer").length, 24);
 });
 
 test("share integration emits only fixed success aliases", () => {

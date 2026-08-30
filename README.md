@@ -6,6 +6,8 @@
 
 土地単独の売買・土地SEOは主対象にしません。道路、境界、測量、私道等は「中古戸建の売買・査定に影響する条件」として扱います。
 
+空き家については、管理・解体・残置物撤去・リフォームの受注を目的にせず、費用を掛ける前に現況のまま中古戸建として価値を確認する順序を扱います。
+
 しまりす不動産自体は宅地建物取引業者ではなく、サイト上で不動産取引の代理・媒介・買取査定等を受任しません。
 
 DAKEは、不動産営業・事務・宅建士等の「実務上の詰まり」を減らす小さな道具として接続します。
@@ -20,6 +22,7 @@ DAKEは、不動産営業・事務・宅建士等の「実務上の詰まり」�
 - 静的 HTML / CSS
 - Cloudflare Pages 公開対象: `public/`
 - 中古戸建カテゴリ: `public/used-house/`
+- 空き家になった中古戸建: `public/vacant-house/`
 - 主要ページ: `public/index.html`, `public/about.html`, `public/dake.html`, `public/contact.html`
 - CSS: `public/css/style.css`
 - 画像: `public/images/`
