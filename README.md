@@ -52,6 +52,7 @@ Production source is `public/`. Root-level HTML is legacy and must not be edited
 - 新しい公開HTMLを追加したらsitemapを再生成し、canonicalとJSON-LDを確認する。
 - root直下のlegacy HTMLは触らない。
 - `git add .` は使わず、目的ファイルだけstageする。
+- 全公開ページのfooterには人物名クレジット・人物プロフィール導線を置かない。プロフィールはヘッダーやAbout本文、記事著者欄に置き、ブランド著作権・法務・連絡・事業導線は維持する。
 
 ## 一次情報の運用
 
