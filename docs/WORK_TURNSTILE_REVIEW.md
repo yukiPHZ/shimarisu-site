@@ -1,6 +1,6 @@
 # 解析設定整理・実Turnstile検証
 
-2026-09-30。内容・導線・文体・設計はユーザーHuman Review ACCEPT。Productionへのmain反映は、iPhone実機とdesktop実ブラウザ200%の最終確認後。
+2026-09-30。内容・導線・文体・設計はユーザーHuman Review ACCEPT。iPhone実機の最終確認もPASS。desktop実ブラウザ200%確認はオーナー判断で省略し、Production進行を承認済み。
 
 ## 解析設定・プライバシー
 
@@ -32,8 +32,8 @@ https://work-notes.shimarisu-site.pages.dev/work/
 
 ## 最終Production Gate
 
-1. iPhone実機: 表示、コピー、普段のメーラーへ貼り付け、必要時の再試行。
-2. desktop実ブラウザ200%: 本文・header・CTA・解析設定の表示とキーボード操作。
-3. 結果をこの会話へ報告し、最終確認が通ってからmain反映/Production deploy。
+- iPhone実機: `/work/`、`/work/tools/`、flagship、Turnstile、実メール表示、コピー→普段のメーラー貼り付け、再認証、表示崩れなしをユーザー確認でPASS。
+- desktop実ブラウザ200%: オーナー判断で実施しない。既存の自動320/375/390/430/1440px・横はみ出し・focus確認を保持し、この省略を受け入れてProduction進行を承認。
+- 2026-09-30、main反映とProduction進行を開始。
 
-Production・関連DAKE backlink公開・Publisher live送信は未実行。Publisherの計画は元指示の順序を維持。
+関連DAKE backlinkは公開へ進行。Publisherは既存Q4のfixed 75%を維持し、replaceable 25%だけを使う計画として別途準備し、live送信は行わない。
