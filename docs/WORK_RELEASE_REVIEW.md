@@ -2,6 +2,26 @@
 
 確認日: 2026-09-30。Production未公開。ユーザー指定のHuman Review通過前にmainへpushしない。
 
+## Preview実測
+
+- 確認URL: https://work-notes.shimarisu-site.pages.dev/work/
+- 固定deployment: https://cea3efc3.shimarisu-site.pages.dev
+- 実装commit: 98e1b7a1b83e4edfcb141def34a30d60f4eb2c7a 。公式Wrangler deploy成功、Functions bundleもcompile/upload成功。
+- 14ページ全てHTTP 200、X-Robots-Tag: noindex、Production canonicalを確認。
+- Preview API実測: GETメール405、tokenなしPOST403、不正token POST403、no-store/noindex。widget未設定のconfigは503で停止。現時点のPreview POST403はorigin設定未完了でも拒否されるため、実Siteverifyによる不正token検証の証拠とは扱わない。
+- 本番トップHTTP 200、/work/への追加導線なし。Production未変更。
+- 作業branchは6repoとも codex/shimarisu-work-notes へpush済み。各作業treeのgit status clean。
+
+| repo | 実装commit | 状態 |
+| --- | --- | --- |
+| shimarisu-site | 98e1b7a | Preview / Human Review待ち |
+| market-observer | 47585cf | 正本更新・export/check済み / main未反映 |
+| dakeapp-site | ccccfb0 | 圧縮v1.1.0公開済みmainへrebase済み / backlink公開待ち |
+| dake-tools-site | 15b55e8 | backlink公開待ち |
+| dake-send-site | d27a735 | backlink公開待ち |
+| dake-typing-site | f0713fa | backlink公開待ち |
+| peakheadz-social-publisher | 変更なし（基点0624c98） | Web公開後に計画作成 / live送信NO |
+
 ## 作成ページ（14件）
 
 | title（末尾に「｜しまりす不動産」） | canonical |
