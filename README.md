@@ -116,3 +116,5 @@ Production source is `public/`. Root-level HTML is legacy and must not be edited
 - Production前にhub・tools・flagship・PDF・日付・Typing・メール動作・iPhone実機・desktopの人間レビューを行う。未承認のままmainへpushしない。
 - Market Observer正本は `market-observer/00_core/project_registry.yaml` 等。生成profileを編集せず、正式export/checkを使う。email copyは査定成立ではない。
 - 公開確認・仕様根拠・未検証事項は `docs/WORK_RELEASE_REVIEW.md` に記録する。
+- 2026-09-30: 内容・設計のHuman Reviewは採用。Turnstile設定・解析UI整理の最新状態は `docs/WORK_TURNSTILE_REVIEW.md`。Production main反映はiPhone実機とdesktop実ブラウザ200%の最終確認後。
+- 公開Varsは `wrangler.toml` の `[vars]`（Production）と `[env.preview.vars]`。本番Varsの適用は最終Gate後のProduction deployと同時に行う。

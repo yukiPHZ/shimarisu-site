@@ -2,6 +2,8 @@
 
 確認日: 2026-09-30。Production未公開。ユーザー指定のHuman Review通過前にmainへpushしない。
 
+更新: 内容・設計はユーザー採用済み。以下は初回Preview時点の記録。明示承認後のTurnstile設定・解析UI整理・残る実機Gateの現況は [WORK_TURNSTILE_REVIEW.md](WORK_TURNSTILE_REVIEW.md) を優先する。
+
 ## Preview実測
 
 - 確認URL: https://work-notes.shimarisu-site.pages.dev/work/

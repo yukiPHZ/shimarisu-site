@@ -29,16 +29,17 @@ const mime={'.html':'text/html','.js':'text/javascript','.css':'text/css','.png'
    return {context,page,analytics};
   }
   const layout=await setup();
-  const routes=['/','/dake','/work/','/work/tools/',...articles.map(a=>`/work/${a.slug}/`)];
+  const routes=[...fs.readFileSync(path.join(root,'sitemap.xml'),'utf8').matchAll(/<loc>([^<]+)<\/loc>/g)].map(m=>new URL(m[1]).pathname);
   for(const width of [320,375,390,430,1440]) {
    await layout.page.setViewportSize({width,height:900});
-   for(const route of routes){await layout.page.goto('https://shimarisu-fudosan.com'+route);assert.equal(await layout.page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,`${width} ${route}`);}
+   for(const route of routes){await layout.page.goto('https://shimarisu-fudosan.com'+route);assert.equal(await layout.page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,`${width} ${route}`);assert.equal(await layout.page.locator('.analytics-privacy-actions .market-observer-consent-change').count(),1);assert.equal(await layout.page.locator('footer > .market-observer-consent-change').count(),0);}
    evidence.viewports.push({width,routes:routes.length,overflow:false});
   }
   await layout.page.setViewportSize({width:390,height:844});await layout.page.goto('https://shimarisu-fudosan.com/work/');await layout.page.screenshot({path:path.join(output,'work-mobile.png'),fullPage:true});
   await layout.page.setViewportSize({width:1440,height:1000});await layout.page.goto('https://shimarisu-fudosan.com/work/contract-pdf-workflow/');await layout.page.screenshot({path:path.join(output,'flagship-desktop.png'),fullPage:true});
   await layout.page.evaluate(()=>document.documentElement.style.zoom='2');assert.equal(await layout.page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,'200% layout zoom');evidence.viewports.push({width:1440,cssZoom:'200%',overflow:false});
   await layout.page.evaluate(()=>document.documentElement.style.zoom='');await layout.page.keyboard.press('Tab');assert.equal(await layout.page.locator('.work-skip').evaluate(el=>el===document.activeElement),true);assert.notEqual(await layout.page.locator('.work-skip').evaluate(el=>getComputedStyle(el).outlineStyle),'none');
+  await layout.page.locator('.analytics-privacy summary').click();await layout.page.locator('.market-observer-consent-change').click();assert.equal(await layout.page.locator('#market-observer-consent-banner').count(),1);await layout.page.keyboard.press('Escape');assert.equal(await layout.page.locator('.market-observer-consent-change').evaluate(el=>el===document.activeElement),true);evidence.privacy.push({settings:'inside policy disclosure on all 38 pages',keyboard:'open, close and focus return PASS'});
   await layout.context.close();
   for(const state of ['unknown','denied','gpc','granted']){
    const {context,page,analytics}=await setup(state);
