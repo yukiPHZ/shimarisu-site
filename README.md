@@ -113,7 +113,7 @@ Production source is `public/`. Root-level HTML is legacy and must not be edited
 - Productionの許可originは `https://shimarisu-fudosan.com`。Previewで検証するときだけ、その環境の `KAITORI_ORIGIN` に完全一致の `https://<branch>.shimarisu-site.pages.dev` を設定し、専用widgetとPreview用Secretを使う。
 - GETではメールを返さない。POSTのorigin、Siteverifyのsuccess・hostname・actionを検査。全応答no-store / noindex。入力token・返却emailのログ禁止。
 - Turnstileは表示ボタン操作後だけ読み込む。解析同意拒否・GPCでも表示とコピーは利用できる。Clipboard失敗時は選択可能なreadonly欄を残す。
-- Production前にhub・tools・flagship・PDF・日付・Typing・メール動作・iPhone実機・desktopの人間レビューを行う。未承認のままmainへpushしない。
+- Production前にhub・tools・flagship・PDF・日付・Typing・メール動作・iPhone実機を人間レビューする。2026-09-30、iPhone実機（Turnstile、実メール表示、コピー→実メーラー貼り付け、再認証、表示）をPASS。desktop実ブラウザ200%確認はオーナー判断で省略し、Production進行を承認。
 - Market Observer正本は `market-observer/00_core/project_registry.yaml` 等。生成profileを編集せず、正式export/checkを使う。email copyは査定成立ではない。
 - 公開確認・仕様根拠・未検証事項は `docs/WORK_RELEASE_REVIEW.md` に記録する。
 - 2026-09-30: 内容・設計のHuman Reviewは採用。Turnstile設定・解析UI整理の最新状態は `docs/WORK_TURNSTILE_REVIEW.md`。Production main反映はiPhone実機とdesktop実ブラウザ200%の最終確認後。
