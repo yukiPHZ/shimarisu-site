@@ -20,6 +20,8 @@ const htmlFiles = [
   "vacant-house/sell-as-is/index.html",
 ];
 
+htmlFiles.push('work/index.html','work/tools/index.html',...require('./work-content.cjs').articles.map(a=>'work/'+a.slug+'/index.html'));
+
 const read = (relativePath) => fs.readFileSync(path.join(publicRoot, relativePath), "utf8");
 const vacantArticleFiles = [
   "vacant-house/inherited-house-before-sale/index.html",
@@ -31,7 +33,7 @@ const vacantArticleFiles = [
 ];
 
 test("all canonical pages install consent-safe Market Observer runtime", () => {
-  assert.equal(htmlFiles.length, 24);
+  assert.equal(htmlFiles.length, 38);
   for (const file of htmlFiles) {
     const html = read(file);
     assert.match(html, /<body data-market-page="[a-z0-9_]+" data-market-content-type="[a-z0-9_]+">/, file);
@@ -69,7 +71,7 @@ test("all local links and assets resolve inside public", () => {
   assert.deepEqual(missing, []);
 });
 
-test("canonical routes and sitemap stay aligned at 24 URLs", () => {
+test("canonical routes and sitemap stay aligned at 38 URLs", () => {
   const canonicalUrls = htmlFiles.map((file) => {
     const match = read(file).match(/<link rel="canonical" href="([^"]+)"/);
     assert.ok(match, file);
@@ -78,7 +80,7 @@ test("canonical routes and sitemap stay aligned at 24 URLs", () => {
   const sitemapUrls = [...fs.readFileSync(path.join(publicRoot, "sitemap.xml"), "utf8").matchAll(/<loc>([^<]+)<\/loc>/g)]
     .map((match) => match[1])
     .sort();
-  assert.equal(new Set(canonicalUrls).size, 24);
+  assert.equal(new Set(canonicalUrls).size, 38);
   assert.deepEqual(canonicalUrls, sitemapUrls);
 });
 
@@ -121,11 +123,11 @@ test("vacant-house cluster does not introduce a direct sales CTA", () => {
 test("only approved CTA aliases are installed", () => {
   const combined = htmlFiles.map(read).join("\n");
   const ids = [...combined.matchAll(/data-market-cta-id="([a-z0-9_]+)"/g)].map((match) => match[1]);
-  assert.deepEqual(new Set(ids), new Set(["author_profile", "personal_site", "kaitori_contact", "kaitori_footer"]));
-  assert.equal(ids.filter((id) => id === "author_profile").length, 17);
+  assert.deepEqual(new Set(ids), new Set(['author_profile','personal_site','kaitori_contact','kaitori_footer',...require('./work-content.cjs').tools.map(t=>'tool_'+t.id),'work_related','work_hub','work_tools']));
+  assert.equal(ids.filter((id) => id === "author_profile").length, 31);
   assert.equal(ids.filter((id) => id === "personal_site").length, 1);
   assert.equal(ids.filter((id) => id === "kaitori_contact").length, 1);
-  assert.equal(ids.filter((id) => id === "kaitori_footer").length, 24);
+  assert.equal(ids.filter((id) => id === "kaitori_footer").length, 38);
 });
 
 test("share integration emits only fixed success aliases", () => {

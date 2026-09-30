@@ -77,7 +77,15 @@
   const urls = walk(PUBLIC_DIR)
     .map(toRelative)
     .filter((relPath) => !shouldExclude(relPath))
-    .map(toUrlPath)
+    .filter((relPath) => !/<meta\b[^>]*name=["']robots["'][^>]*content=["'][^"']*noindex/i.test(fs.readFileSync(path.join(PUBLIC_DIR, relPath), "utf8")))
+    .map((relPath) => {
+      const html = fs.readFileSync(path.join(PUBLIC_DIR, relPath), "utf8");
+      const canonical = html.match(/<link\b[^>]*rel=["']canonical["'][^>]*href=["']([^"']+)["']/i);
+      if (!canonical) throw new Error(`Missing canonical: ${relPath}`);
+      const url = new URL(canonical[1]);
+      if (url.origin !== SITE_URL || url.search || url.hash || url.pathname !== toUrlPath(relPath)) throw new Error(`Invalid canonical: ${relPath}`);
+      return url.pathname;
+    })
     .sort((a, b) => a.localeCompare(b));
 
   const sitemap = [
@@ -98,6 +106,7 @@
   ].join("\n");
 
   fs.writeFileSync(path.join(PUBLIC_DIR, "sitemap.xml"), sitemap, "utf8");
-  fs.writeFileSync(path.join(PUBLIC_DIR, "robots.txt"), robots, "utf8");
+  // Existing robots rules are independent of page generation; do not overwrite them.
+  if (!fs.readFileSync(path.join(PUBLIC_DIR, "robots.txt"), "utf8").includes(`Sitemap: ${SITE_URL}/sitemap.xml`)) throw new Error("robots sitemap mismatch");
   console.log(`Generated sitemap with ${urls.length} URLs.`);
 })();

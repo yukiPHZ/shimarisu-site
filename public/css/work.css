@@ -1,0 +1,21 @@
+.work-page { overflow-wrap: anywhere; }
+.work-steps { padding-left: 1.5em; line-height: 1.95; }
+.work-steps li + li { margin-top: 1rem; }
+.work-tool { border-top: 1px solid #deddd4; padding: 26px 0; }
+.work-tool h3 { font-size: 1.25rem; margin: 8px 0 12px; }
+.work-tool details { margin: 14px 0; }
+.work-tool summary { cursor: pointer; font-size: .9rem; }
+.work-small { font-size: .875rem; color: #5a615d; line-height: 1.8; }
+.work-contact { border-top: 1px solid #d9ddd8; margin-top: 48px; padding: 32px 0 12px; }
+.work-contact h2 { font-size: 1.2rem; line-height: 1.7; }
+.work-contact p { margin: 14px 0; }
+.work-contact button { min-height: 44px; border: 1px solid #768579; background: #fff; color: #304736; border-radius: 6px; padding: 10px 18px; font: inherit; cursor: pointer; }
+.work-contact button:disabled { cursor: wait; opacity: .65; }
+.work-contact input { display: block; box-sizing: border-box; width: 100%; max-width: 32rem; margin: 8px 0 12px; padding: 12px; font: inherit; color: #202923; border: 1px solid #768579; border-radius: 4px; background: #fff; }
+.work-contact [hidden] { display: none; }
+.work-contact [data-turnstile-container] { margin-top: 12px; }
+.work-back { margin: 30px 0; line-height: 2; }
+.work-page :focus-visible,.work-skip:focus { outline: 3px solid #385f44; outline-offset: 4px; }
+.work-skip { position: absolute; left: 12px; top: -100px; background: #fff; padding: 12px; z-index: 10000; }
+.work-skip:focus { top: 12px; }
+@media (max-width: 380px) { .work-contact button { max-width: 100%; } }

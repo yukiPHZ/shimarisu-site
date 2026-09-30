@@ -73,8 +73,14 @@
       if (shareTarget !== "os_share" && shareTarget !== "clipboard") return;
       tracker.track("share_intent", {
         share_target: shareTarget,
-        content_variant: "used_house_article",
+        content_variant: ["work_hub", "work_tools", "work_article"].includes(page.content_type) ? page.content_type : "used_house_article",
       }, { actionToken: actionToken("share") });
+    });
+
+    root.document.addEventListener("shimarisu:email-success", (event) => {
+      const alias = event.detail && event.detail.alias;
+      if (alias !== "kaitori_email_reveal" && alias !== "kaitori_email_copy") return;
+      tracker.track("cta_click", { ...page, cta_id: alias, cta_group: "work" }, { actionToken: actionToken("email") });
     });
   }
 

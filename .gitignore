@@ -8,3 +8,7 @@ Thumbs.db
 
 # logs
 *.log
+test-results/
+.wrangler/
+.dev.vars*
+.env*

@@ -47,3 +47,32 @@
   Cache-Control: no-transform
 /vacant-house/sell-as-is/
   Cache-Control: no-transform
+
+/work/
+  Cache-Control: no-transform
+/work/tools/
+  Cache-Control: no-transform
+/work/pdf-merge-real-estate/
+  Cache-Control: no-transform
+/work/pdf-select-pages/
+  Cache-Control: no-transform
+/work/pdf-split-every-page/
+  Cache-Control: no-transform
+/work/pdf-file-name-organize/
+  Cache-Control: no-transform
+/work/pdf-too-large/
+  Cache-Control: no-transform
+/work/large-files-send/
+  Cache-Control: no-transform
+/work/mansion-reform-schedule/
+  Cache-Control: no-transform
+/work/contract-settlement-days/
+  Cache-Control: no-transform
+/work/building-age-check/
+  Cache-Control: no-transform
+/work/month-crossing-calendar/
+  Cache-Control: no-transform
+/work/real-estate-typing/
+  Cache-Control: no-transform
+/work/contract-pdf-workflow/
+  Cache-Control: no-transform

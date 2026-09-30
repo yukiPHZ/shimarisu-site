@@ -19,7 +19,9 @@ DAKEは、不動産営業・事務・宅建士等の「実務上の詰まり」�
 
 ## 技術構成
 
-- 静的 HTML / CSS
+- 静的 HTML / CSS + メール表示専用のCloudflare Pages Functions
+- 実務ノート: `public/work/`（hub・代表道具・12記事）。編集正本は `scripts/work-content.cjs`、`node scripts/generate-work.js` でHTML生成
+- メール保護: `functions/api/kaitori-email.js`、公開sitekey取得: `functions/api/kaitori-config.js`
 - Cloudflare Pages 公開対象: `public/`
 - 中古戸建カテゴリ: `public/used-house/`
 - 空き家になった中古戸建: `public/vacant-house/`
@@ -48,7 +50,8 @@ Production source is `public/`. Root-level HTML is legacy and must not be edited
 - 一般的な取引実務、菊田幸彦の実務経験、個別物件の判断を明確に分ける。
 - 実務経験を法令や全国一律の運用として書かない。
 - 不安を煽らず、「まず見る、分からない点を把握する、必要なら調べる、取引までに整える」の順で説明する。
-- 記事から査定受付、LINE、Notion等の営業CTAへ直接誘導しない。
+- 一般向け中古戸建・空き家記事は、従来どおり査定受付、LINE、Notion等の営業CTAへ直接誘導しない。
+- `/work/` に限り、不動産業者向けの実務領域として株式会社さくら都市で菊田幸彦が担当する戸建買取査定への業務用メール導線を掲載する。しまりす不動産自体が媒介・代理・査定を受任する表示にはしない。
 - 新しい公開HTMLを追加したらsitemapを再生成し、canonicalとJSON-LDを確認する。
 - root直下のlegacy HTMLは触らない。
 - `git add .` は使わず、目的ファイルだけstageする。
@@ -92,8 +95,8 @@ Production source is `public/`. Root-level HTML is legacy and must not be edited
   "repo_name": "shimarisu-site",
   "domain": "shimarisu-fudosan.com",
   "cloudflare_project": "shimarisu-site",
-  "site_type": "static",
-  "has_functions": false,
+  "site_type": "pages_functions",
+  "has_functions": true,
   "has_openai_api": false,
   "health_url": "",
   "production_url": "https://shimarisu-fudosan.com",
@@ -102,3 +105,14 @@ Production source is `public/`. Root-level HTML is legacy and must not be edited
   "show_on_dashboard": true
 }
 ```
+
+## 実務ノートの公開とメール保護
+
+- Production source / build outputは引き続き `public/`。root legacy HTMLは編集しない。
+- メールは `KAITORI_EMAIL`、Turnstile秘密鍵は `TURNSTILE_SECRET`。値をGit、HTML、JS、JSON-LD、ログ、計測へ置かない。公開sitekeyは `TURNSTILE_SITE_KEY`。
+- Productionの許可originは `https://shimarisu-fudosan.com`。Previewで検証するときだけ、その環境の `KAITORI_ORIGIN` に完全一致の `https://<branch>.shimarisu-site.pages.dev` を設定し、専用widgetとPreview用Secretを使う。
+- GETではメールを返さない。POSTのorigin、Siteverifyのsuccess・hostname・actionを検査。全応答no-store / noindex。入力token・返却emailのログ禁止。
+- Turnstileは表示ボタン操作後だけ読み込む。解析同意拒否・GPCでも表示とコピーは利用できる。Clipboard失敗時は選択可能なreadonly欄を残す。
+- Production前にhub・tools・flagship・PDF・日付・Typing・メール動作・iPhone実機・desktopの人間レビューを行う。未承認のままmainへpushしない。
+- Market Observer正本は `market-observer/00_core/project_registry.yaml` 等。生成profileを編集せず、正式export/checkを使う。email copyは査定成立ではない。
+- 公開確認・仕様根拠・未検証事項は `docs/WORK_RELEASE_REVIEW.md` に記録する。

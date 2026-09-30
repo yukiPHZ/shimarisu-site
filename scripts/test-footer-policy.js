@@ -17,6 +17,6 @@ function scan(dir) {
   }
 }
 scan(publicDir);
-assert.equal(checked, 24);
+assert.equal(checked, 38);
 assert.match(fs.readFileSync(path.join(publicDir, "about.html"), "utf8"), /菊田\s*幸彦/);
 console.log(`FOOTER_POLICY_PASS pages=${checked}`);
