@@ -71,7 +71,20 @@ header {
 .analytics-privacy summary {
   width: fit-content;
   cursor: pointer;
-  color: var(--text);
+  color: var(--muted);
+}
+
+.analytics-privacy summary:focus-visible,
+.analytics-privacy a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+.analytics-privacy .market-observer-consent-change {
+  display: inline-block;
+  margin: 0;
+  font: inherit;
+  color: var(--muted);
 }
 
 .analytics-privacy-body {

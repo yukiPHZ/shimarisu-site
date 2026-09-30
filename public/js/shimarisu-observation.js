@@ -38,12 +38,13 @@
     consent.mount({
       locale: "ja",
       detailsSelector: ".analytics-privacy",
+      settingsContainerSelector: ".analytics-privacy-actions",
       messages: {
         heading: "匿名の利用状況の計測について",
         body: [
           "しまりす不動産では、サイトを改善するため、許可された場合だけGoogle Analyticsで匿名の利用状況を計測します。",
-          "住所、URLのqueryやhash、本文、記事タイトル、共有内容、入力内容、個人情報は送信しません。",
-          "許可しなくても、すべてのページをそのまま閲覧できます。",
+          "入力した個人情報、メールアドレス、認証情報、コピーした内容は計測に含めません。",
+          "許可しなくても、ページ閲覧やメールアドレスの表示・コピーを利用できます。",
         ],
       },
     });
@@ -73,8 +74,14 @@
       if (shareTarget !== "os_share" && shareTarget !== "clipboard") return;
       tracker.track("share_intent", {
         share_target: shareTarget,
-        content_variant: "used_house_article",
+        content_variant: ["work_hub", "work_tools", "work_article"].includes(page.content_type) ? page.content_type : "used_house_article",
       }, { actionToken: actionToken("share") });
+    });
+
+    root.document.addEventListener("shimarisu:email-success", (event) => {
+      const alias = event.detail && event.detail.alias;
+      if (alias !== "kaitori_email_reveal" && alias !== "kaitori_email_copy") return;
+      tracker.track("cta_click", { ...page, cta_id: alias, cta_group: "work" }, { actionToken: actionToken("email") });
     });
   }
 

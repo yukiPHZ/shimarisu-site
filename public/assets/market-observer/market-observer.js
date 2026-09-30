@@ -7,6 +7,20 @@
   const CONSENT_KEY = "market_observer_analytics_consent";
   const LEGACY_OPT_OUT_KEY = "market_observer_opt_out";
   const TERMINAL_STATES = new Set(["loading", "ready", "failed_terminal"]);
+  // Reporting/setup metadata and Google configuration are not event parameters.
+  const CONFIG_ONLY_KEYS = new Set([
+    "send_page_view", "allow_google_signals", "allow_ad_personalization_signals",
+    "config_scope_parameters", "required_custom_dimensions", "ga4_reporting_metadata", "ga4_config",
+    "schema_version", "production_origins", "production_path_policy", "production_path_prefixes",
+    "preview_host_patterns", "preview_validation", "allowed_events", "aliases", "destination_hosts",
+    "page_title_alias", "measurement_id_placeholder", "campaign_policy", "referrer_policy", "_notice",
+    "use_start_contract", "excluded_routes", "transport_policy", "measurement_id", "privacy_contract",
+  ]);
+  const GOOGLE_CONFIG_KEYS = new Set([
+    "send_page_view", "allow_google_signals", "allow_ad_personalization_signals",
+    "page_location", "page_referrer", "page_title", "project_id", "surface", "tracker_version",
+    "campaign_source", "campaign_medium", "campaign_name", "campaign_content",
+  ]);
 
   const isCommonJs = typeof module !== "undefined" && module.exports;
   const win = getWindow();
@@ -163,6 +177,7 @@
   }
 
   function sanitizedReferrer() {
+    if (state.profile && state.profile.referrer_policy === "none") return "";
     const document = getDocument();
     const currentWindow = getWindow();
     if (!document || !document.referrer) return "";
@@ -269,6 +284,7 @@
   function validProductionPath(profile) {
     const path = currentPath();
     if (!path) return false;
+    if (asArray(profile.excluded_routes).some((route) => path === normalizePath(route) || path.startsWith(normalizePath(route).replace(/\/$/, "") + "/"))) return false;
     const policy = profile.production_path_policy || {};
     const values = asArray(policy.values).map((item) => normalizePath(item)).filter(Boolean);
     if (policy.mode === "exact") return values.includes(path);
@@ -322,11 +338,14 @@
     const schemaProject = runtimeSchema.projects && runtimeSchema.projects[profile.project_id];
     if (!schemaProject) reasons.push("profile_project_missing_from_runtime_schema");
     if (schemaProject) {
-      for (const key of ["surface", "page_title_alias"]) {
+      for (const key of ["surface", "page_title_alias", "campaign_policy", "referrer_policy"]) {
         if (schemaProject[key] !== profile[key]) reasons.push(`profile_${key}_mismatch`);
       }
       for (const key of ["production_origins", "production_path_prefixes", "preview_host_patterns", "preview_validation", "allowed_events", "destination_hosts"]) {
         if (canonicalStringify(schemaProject[key]) !== canonicalStringify(profile[key])) reasons.push(`profile_${key}_mismatch`);
+      }
+      for (const key of ["use_start_contract", "excluded_routes", "transport_policy", "measurement_id", "privacy_contract"]) {
+        if (canonicalStringify(schemaProject[key] || null) !== canonicalStringify(profile[key] || null)) reasons.push(`profile_${key}_mismatch`);
       }
     }
     return reasons;
@@ -338,9 +357,12 @@
     reasons.push(...validateGenerated(config));
     const runtimeSchema = config.runtimeSchema || {};
     const profile = config.profile || {};
+    if (profile.transport_policy === "no_send") reasons.push("no_send_project");
     if (!validMeasurementId(config.measurementId)) reasons.push("invalid_or_placeholder_measurement_id");
     if (isLocalOrFile()) reasons.push("local_or_file_origin");
     const previewValidationAllowed = isPreviewValidationAllowed(profile);
+    if (profile.transport_policy === "staging_only" && !previewValidationAllowed) reasons.push("staging_validation_only");
+    if (profile.measurement_id && config.measurementId !== profile.measurement_id) reasons.push("canonical_measurement_id_mismatch");
     if (isPreviewHost(profile) && !previewValidationAllowed) reasons.push("preview_origin");
     const consent = analyticsConsentState();
     if (consent.state !== "granted") reasons.push(consent.reason);
@@ -461,7 +483,12 @@
     callGtag("js", new Date());
     const configPayload = Object.assign(
       {},
-      safeConfig.runtimeSchema.ga4_config,
+      // Schema metadata describes validation, not parameters for Google's tag.
+      {
+        send_page_view: false,
+        allow_google_signals: false,
+        allow_ad_personalization_signals: false,
+      },
       {
         page_location: sanitizedLocation(),
         page_referrer: sanitizedReferrer(),
@@ -470,7 +497,7 @@
         surface: safeConfig.profile.surface,
         tracker_version: safeConfig.profile.tracker_version,
       },
-      extractSafeCampaign(safeConfig.runtimeSchema)
+      safeConfig.profile.campaign_policy === "none" ? {} : extractSafeCampaign(safeConfig.runtimeSchema)
     );
     callGtag("config", safeConfig.measurementId, configPayload);
     state.status = "ready";
@@ -488,10 +515,23 @@
   }
 
   function callGtag() {
+    const args = Array.from(arguments);
+    if (args[0] === "event") {
+      // Last application-controlled boundary: recheck after payload assembly.
+      // Google tag's own automatic fields/events are outside this serializer.
+      const final = sanitizeParameters(args[1], args[2]);
+      if (!final.ok) return false;
+      args[2] = final.value;
+    } else if (args[0] === "config") {
+      // Positive allowlist also protects legacy generated schemas carrying metadata
+      // in ga4_config, and drops future/unknown config keys instead of inheriting them.
+      args[2] = Object.fromEntries(Object.entries(args[2] || {}).filter(([key]) => GOOGLE_CONFIG_KEYS.has(key)));
+    }
     state.gtagCallCount += 1;
     if (state.transport && typeof state.transport.gtag === "function") {
-      state.transport.gtag.apply(null, arguments);
+      state.transport.gtag.apply(null, args);
     }
+    return true;
   }
 
   function eventDefinition(eventName) {
@@ -549,6 +589,8 @@
     if (definition.allowed_values && !definition.allowed_values.includes(normalized)) return { ok: false, reason: "enum" };
     const sourceValues = allowedValuesForSource(definition.allowed_values_source);
     if (sourceValues && !sourceValues.has(normalized)) return { ok: false, reason: "source_enum" };
+    const strictAliasKey = { route_id: "route_ids", cta_id: "cta_ids", tool_action: "tool_actions", result_type: "result_types", error_code: "error_codes", component: "components" }[name];
+    if (state.profile.privacy_contract && state.profile.privacy_contract.permitted === "canonical_fixed_aliases_only" && strictAliasKey && !asArray(state.profile.aliases[strictAliasKey]).includes(normalized)) return { ok: false, reason: "project_alias" };
     if (definition.pattern && !new RegExp(definition.pattern).test(normalized)) return { ok: false, reason: "pattern" };
     return { ok: true, value: normalized };
   }
@@ -589,6 +631,7 @@
     const input = Object.assign({}, parameters || {}, baseParameters());
     const output = {};
     for (const key of asArray(definition.allowed_parameters)) {
+      if (CONFIG_ONLY_KEYS.has(key)) continue;
       if (!Object.prototype.hasOwnProperty.call(input, key)) continue;
       const result = sanitizeValue(key, input[key]);
       if (result.ok) output[key] = result.value;
@@ -604,7 +647,14 @@
   function semanticValidation(eventName, parameters, options) {
     const definition = eventDefinition(eventName);
     const rules = definition.semantic_rules || {};
-    if (rules.input_present_must_be_true && parameters.input_present !== true) return "input_not_present";
+    if (eventName === "use_start" && rules.input_present_project_contract) {
+      const contract = state.profile.use_start_contract;
+      if (contract) {
+        if (contract.input_mode !== "none" || contract.explicit_start_action_required !== true || contract.input_present_value !== false) return "invalid_input_free_contract";
+        if (parameters.input_present !== false) return "input_free_requires_false";
+        if (!options || options.explicitStart !== true) return "explicit_start_required";
+      } else if (parameters.input_present !== true) return "input_not_present";
+    } else if (rules.input_present_must_be_true && parameters.input_present !== true) return "input_not_present";
     if (rules.copy_success_confirmation_required && !(options && options.copySucceeded === true)) return "copy_not_confirmed";
     if (requiresActionToken(eventName) && !actionToken(options)) return "action_token_required";
     return "";
@@ -696,7 +746,7 @@
       const eventDefinitionValue = eventDefinition(eventName);
       if (asArray(eventDefinitionValue.allowed_parameters).includes("page_location")) payload.page_location = sanitizedLocation();
     }
-    callGtag("event", eventName, payload);
+    if (!callGtag("event", eventName, payload)) return { ok: false, reason: "final_serialization_rejected" };
     registerDedupe(dedupe.key);
     state.sentEventCount += 1;
     state.lastEventName = eventName;
@@ -755,6 +805,7 @@
         hasGlobalPrivacyControl,
         storedConsentValue,
         VERSION,
+        callGtag,
       },
     });
   }
