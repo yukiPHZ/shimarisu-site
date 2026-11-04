@@ -14,7 +14,7 @@
     "schema_version", "production_origins", "production_path_policy", "production_path_prefixes",
     "preview_host_patterns", "preview_validation", "allowed_events", "aliases", "destination_hosts",
     "page_title_alias", "measurement_id_placeholder", "campaign_policy", "referrer_policy", "_notice",
-    "use_start_contract", "excluded_routes", "transport_policy", "measurement_id", "privacy_contract",
+    "use_start_contract", "excluded_routes", "transport_policy", "measurement_id", "privacy_contract", "route_contracts",
   ]);
   const GOOGLE_CONFIG_KEYS = new Set([
     "send_page_view", "allow_google_signals", "allow_ad_personalization_signals",
@@ -59,6 +59,7 @@
       rateLimit: new Map(),
       rateLimitedCount: 0,
       pageContext: {},
+      boundRoute: null,
       now: () => Date.now(),
     };
   }
@@ -282,6 +283,9 @@
   }
 
   function validProductionPath(profile) {
+    // Route contracts are literal Cloudflare canonical paths, including whether
+    // they end in a slash. Legacy prefix/normalized contracts keep their behavior.
+    if (profile.route_contracts && profile.production_path_policy.mode === "exact") return asArray(profile.production_path_policy.values).includes(getWindow().location.pathname);
     const path = currentPath();
     if (!path) return false;
     if (asArray(profile.excluded_routes).some((route) => path === normalizePath(route) || path.startsWith(normalizePath(route).replace(/\/$/, "") + "/"))) return false;
@@ -290,6 +294,18 @@
     if (policy.mode === "exact") return values.includes(path);
     if (policy.mode === "prefix") return values.some((prefix) => path.startsWith(prefix));
     return false;
+  }
+
+  // Only the new LP contracts require writable consent storage. Preserve the
+  // exact existing saved value/key; never create a probe identifier or reset it.
+  function profileRouteConsentAvailable() {
+    if (analyticsConsentState().state !== "granted") return false;
+    try {
+      const storage = getWindow().localStorage;
+      const value = storage.getItem(CONSENT_KEY);
+      storage.setItem(CONSENT_KEY, value);
+      return storage.getItem(CONSENT_KEY) === value;
+    } catch (_error) { return false; }
   }
 
   function hasKnownDummyMeasurementId(measurementId) {
@@ -344,7 +360,7 @@
       for (const key of ["production_origins", "production_path_prefixes", "preview_host_patterns", "preview_validation", "allowed_events", "destination_hosts"]) {
         if (canonicalStringify(schemaProject[key]) !== canonicalStringify(profile[key])) reasons.push(`profile_${key}_mismatch`);
       }
-      for (const key of ["use_start_contract", "excluded_routes", "transport_policy", "measurement_id", "privacy_contract"]) {
+      for (const key of ["use_start_contract", "excluded_routes", "transport_policy", "measurement_id", "privacy_contract", "route_contracts"]) {
         if (canonicalStringify(schemaProject[key] || null) !== canonicalStringify(profile[key] || null)) reasons.push(`profile_${key}_mismatch`);
       }
     }
@@ -370,6 +386,13 @@
     const origin = currentOrigin();
     if (!origin || (!asArray(profile.production_origins).includes(origin) && !previewValidationAllowed)) reasons.push("non_production_origin");
     if (!validProductionPath(profile)) reasons.push("invalid_production_path");
+    const route = profile.route_contracts && profile.route_contracts[getWindow().location.pathname];
+    if (route) {
+      if (!profileRouteConsentAvailable()) reasons.push("route_consent_unavailable");
+      const production = asArray(profile.production_origins).includes(getWindow().location.origin);
+      if (production ? route.production_enabled !== true : route.preview_enabled !== true) reasons.push("route_observation_pending");
+      if (!config.pageContext || config.pageContext.route_id !== route.route_id || config.pageContext.content_type !== route.content_type) reasons.push("route_context_mismatch");
+    }
     const analyticsReason = hasUnknownAnalytics(config.measurementId);
     if (analyticsReason) reasons.push(analyticsReason);
     if (runtimeSchema.ga4_config && runtimeSchema.ga4_config.send_page_view !== false) reasons.push("send_page_view_not_false");
@@ -461,6 +484,7 @@
   }
 
   function init(config) {
+    if (TERMINAL_STATES.has(state.status)) return { ok: false, reasons: [`already_${state.status}`], retryable: false };
     const safeConfig = config || {};
     state.config = safeConfig;
     state.runtimeSchema = safeConfig.runtimeSchema || null;
@@ -474,6 +498,9 @@
       return { ok: false, reasons: reasons.slice(), retryable: state.status === "blocked_retryable" };
     }
 
+    if (state.profile.route_contracts && state.profile.route_contracts[getWindow().location.pathname]) {
+      state.boundRoute = { origin: getWindow().location.origin, path: getWindow().location.pathname };
+    }
     state.status = "loading";
     state.transport = ensureOwnedTransport(safeConfig);
     const loaded = state.transport.loadTag ? state.transport.loadTag(safeConfig.measurementId) : false;
@@ -565,8 +592,8 @@
   }
 
   function allowedValuesForSource(source) {
-    if (source === "project_registry.projects.project_id") return new Set(Object.keys(state.runtimeSchema.projects || {}));
-    if (source === "surface_dictionary.surfaces") return new Set(asArray(state.runtimeSchema.surfaces));
+    if (source === "sites.project_id") return new Set(Object.keys(state.runtimeSchema.projects || {}));
+    if (source === "sites.surface") return new Set(Object.values(state.runtimeSchema.projects || {}).map((project) => project.surface));
     if (source && source.startsWith("profile.")) {
       const key = source.slice("profile.".length);
       if (key === "destination_hosts") return new Set(asArray(state.profile.destination_hosts));
@@ -589,7 +616,7 @@
     if (definition.allowed_values && !definition.allowed_values.includes(normalized)) return { ok: false, reason: "enum" };
     const sourceValues = allowedValuesForSource(definition.allowed_values_source);
     if (sourceValues && !sourceValues.has(normalized)) return { ok: false, reason: "source_enum" };
-    const strictAliasKey = { route_id: "route_ids", cta_id: "cta_ids", tool_action: "tool_actions", result_type: "result_types", error_code: "error_codes", component: "components" }[name];
+    const strictAliasKey = { route_id: "route_ids", cta_id: "cta_ids", section_id: "section_ids", product_id: "product_ids", price_id_alias: "price_id_aliases", tool_action: "tool_actions", result_type: "result_types", error_code: "error_codes", component: "components" }[name];
     if (state.profile.privacy_contract && state.profile.privacy_contract.permitted === "canonical_fixed_aliases_only" && strictAliasKey && !asArray(state.profile.aliases[strictAliasKey]).includes(normalized)) return { ok: false, reason: "project_alias" };
     if (definition.pattern && !new RegExp(definition.pattern).test(normalized)) return { ok: false, reason: "pattern" };
     return { ok: true, value: normalized };
@@ -730,6 +757,12 @@
   function track(eventName, parameters, options) {
     const runtimeSchema = state.runtimeSchema || {};
     if (state.status !== "ready") return { ok: false, reason: "tracker_not_ready" };
+    const route = state.profile.route_contracts && state.profile.route_contracts[getWindow().location.pathname];
+    if (state.boundRoute && (getWindow().location.origin !== state.boundRoute.origin || getWindow().location.pathname !== state.boundRoute.path || !route)) return { ok: false, reason: "route_changed" };
+    if (route && eventName === "cta_click" && ((parameters || {}).route_id !== route.route_id || (parameters || {}).content_type !== route.content_type || !asArray(state.profile.aliases.cta_groups).includes((parameters || {}).cta_group))) return { ok: false, reason: "route_context_mismatch" };
+    if (route && !profileRouteConsentAvailable()) return { ok: false, reason: "route_consent_unavailable" };
+    if (route && (!asArray(route.allowed_events).includes(eventName)
+        || (eventName === "cta_click" && !Object.prototype.hasOwnProperty.call(route.cta_destinations, (parameters || {}).cta_id)))) return { ok: false, reason: "route_event_not_allowed" };
     if (asArray(runtimeSchema.prohibited_client_events).includes(eventName)) return { ok: false, reason: "prohibited_event" };
     if (!eventDefinition(eventName)) return { ok: false, reason: "unknown_event" };
     const effectiveParameters = eventName === "page_view" ? pageParams() : (parameters || {});
