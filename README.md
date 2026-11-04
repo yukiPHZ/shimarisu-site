@@ -114,7 +114,17 @@ Production source is `public/`. Root-level HTML is legacy and must not be edited
 - GETではメールを返さない。POSTのorigin、Siteverifyのsuccess・hostname・actionを検査。全応答no-store / noindex。入力token・返却emailのログ禁止。
 - Turnstileは表示ボタン操作後だけ読み込む。解析同意拒否・GPCでも表示とコピーは利用できる。Clipboard失敗時は選択可能なreadonly欄を残す。
 - Production前にhub・tools・flagship・PDF・日付・Typing・メール動作・iPhone実機を人間レビューする。2026-09-30、iPhone実機（Turnstile、実メール表示、コピー→実メーラー貼り付け、再認証、表示）をPASS。desktop実ブラウザ200%確認はオーナー判断で省略し、Production進行を承認。
-- Market Observer正本は `market-observer/00_core/project_registry.yaml` 等。生成profileを編集せず、正式export/checkを使う。email copyは査定成立ではない。
+- Market Observer正本は `market-observer/00_core/sites.yaml`。生成されたtrackerを編集せず、`tools/site.py install/check` を使う。email copyは査定成立ではない。
 - 公開確認・仕様根拠・未検証事項は `docs/WORK_RELEASE_REVIEW.md` に記録する。
 - 2026-09-30: 内容・設計のHuman Reviewは採用。Turnstile設定・解析UI整理の最新状態は `docs/WORK_TURNSTILE_REVIEW.md`。Production main反映はiPhone実機とdesktop実ブラウザ200%の最終確認後。
 - 公開Varsは `wrangler.toml` の `[vars]`（Production）と `[env.preview.vars]`。本番Varsの適用は最終Gate後のProduction deployと同時に行う。
+
+<!-- social-video-studio-canonical-v1 -->
+
+## 動画制作・素材管理
+
+動画制作・収録素材・本人採用状態・制作履歴の正本は **Social Video Studio** です。製品仕様はこのrepoの既存正本、投稿・予約・公開結果はPublisherを参照します。
+
+Studio検索用の製品識別子：`shimarisu_fudosan`。
+
+ローカルで同じ作業フォルダ配下にStudioを置き、`../social-video-studio/VIDEO_REGISTRY.md`、`../social-video-studio/registry/catalog.html`、`../social-video-studio/registry/videos.json` を参照してください。中央StudioのGitHub remoteは未設定のため、GitHub上の中央リンクは未設定です。製品repoへ動画や制作履歴を複製しません。
