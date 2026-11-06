@@ -20,7 +20,7 @@ test('14 work pages have unique canonical, metadata, schema and authored practic
  const pages=['','tools',...articles.map(a=>a.slug)];const canonical=new Set();
  for(const slug of pages){const h=fs.readFileSync(path.join(root,'work',slug,'index.html'),'utf8');const url=h.match(/rel="canonical" href="([^"]+)"/)[1];assert.ok(!canonical.has(url));canonical.add(url);
   assert.match(h,/<meta name="description" content="[^"]+"/);assert.match(h,/<meta property="og:image"/);
-  const graph=JSON.parse(h.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1])['@graph'];assert.ok(graph.some(x=>x['@type']==='BreadcrumbList'));assert.equal(graph[0].author['@id'],'https://shimarisu-fudosan.com/about#person');
+  const graph=JSON.parse(h.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1])['@graph'];assert.ok(graph.some(x=>x['@type']==='BreadcrumbList'));assert.equal(graph[0].author['@id'],'https://yukihikokikuta.com/#person');
   assert.equal((h.match(/data-kaitori-contact/g)||[]).length,1);assert.doesNotMatch(h,/mailto:|[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i);
  }
  for(const a of articles){assert.ok(a.manual.length>=3);assert.ok(a.check.length>=3);assert.ok(a.related.length>=2);}
