@@ -46,6 +46,10 @@ DAKEは、不動産営業・事務・宅建士等の「実務上の詰まり」�
 - Build output directory: `public`
 - Production branch: `main`
 
+Production architecture is **Cloudflare Pages + Pages Functions**. `public/` is deployed by Pages, and `functions/` is built and operated by the Pages pipeline.
+
+2026-11-07、同名のCloudflare Workers static-assets serviceに誤って接続されていた別のWorkers Git Build（repo `yukiPHZ/shimarisu-site`、branch `main`、deploy command `npx wrangler deploy`）は、Pages projectへWorkers deployを実行して失敗する重複連携と確認したため、自動Buildを無効化しGit連携を解除した。Worker service自体、Cloudflare Pages project、Pages Functionsは削除・変更していない。将来もこのrepoへ独立したWorkers Git Buildを再作成しない。
+
 ## Source of truth
 
 Production source is `public/`. Root-level HTML is legacy and must not be edited as part of production page work.
