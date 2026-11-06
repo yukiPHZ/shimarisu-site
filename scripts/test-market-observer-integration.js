@@ -105,7 +105,7 @@ test("vacant-house pages keep valid schema and the existing author identity", ()
     const schema = JSON.parse(html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1]);
     const article = schema["@graph"].find((entry) => entry["@type"] === "Article");
     assert.ok(article, file);
-    assert.equal(article.author["@id"], "https://shimarisu-fudosan.com/about#person", file);
+    assert.equal(article.author["@id"], "https://yukihikokikuta.com/#person", file);
     assert.equal(article.mainEntityOfPage, html.match(/<link rel="canonical" href="([^"]+)"/)[1], file);
     assert.ok(schema["@graph"].some((entry) => entry["@type"] === "BreadcrumbList"), file);
     assert.equal((html.match(/data-article-share/g) || []).length, 1, file);
