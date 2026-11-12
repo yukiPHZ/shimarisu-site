@@ -32,6 +32,7 @@ DAKEは、不動産営業・事務・宅建士等の「実務上の詰まり」�
 - 中古戸建カテゴリ: `public/used-house/`
 - 空き家になった中古戸建: `public/vacant-house/`
 - 主要ページ: `public/index.html`, `public/about.html`, `public/dake.html`, `public/contact.html`
+- 戸建買取査定の本丸: `public/kaitori/index.html`（`https://shimarisu-fudosan.com/kaitori/`）
 - CSS: `public/css/style.css`
 - 画像: `public/images/`
 - Sitemap生成: `node scripts/generate-sitemap.js`
@@ -61,7 +62,8 @@ Production source is `public/`. Root-level HTML is legacy and must not be edited
 - 実務経験を法令や全国一律の運用として書かない。
 - 不安を煽らず、「まず見る、分からない点を把握する、必要なら調べる、取引までに整える」の順で説明する。
 - 一般向け中古戸建・空き家記事は、従来どおり査定受付、LINE、Notion等の営業CTAへ直接誘導しない。
-- `/work/` に限り、不動産業者向けの実務領域として株式会社さくら都市で菊田幸彦が担当する戸建買取査定への業務用メール導線を掲載する。しまりす不動産自体が媒介・代理・査定を受任する表示にはしない。
+- `/work/` では、不動産業者向けの実務領域として株式会社さくら都市で菊田幸彦が担当する戸建買取査定への業務用メール導線を掲載する。しまりす不動産自体が媒介・代理・査定を受任する表示にはしない。
+- `/kaitori/` は仲介業者向け戸建買取査定の本丸とし、株式会社さくら都市の業務であることを明示する。既存ページは短い案内からこのURLへつなぐ。
 - 新しい公開HTMLを追加したらsitemapを再生成し、canonicalとJSON-LDを確認する。
 - root直下のlegacy HTMLは触らない。
 - `git add .` は使わず、目的ファイルだけstageする。
@@ -119,12 +121,14 @@ Production source is `public/`. Root-level HTML is legacy and must not be edited
 ## 実務ノートの公開とメール保護
 
 - Production source / build outputは引き続き `public/`。root legacy HTMLは編集しない。
-- メールは `KAITORI_EMAIL`、Turnstile秘密鍵は `TURNSTILE_SECRET`。値をGit、HTML、JS、JSON-LD、ログ、計測へ置かない。公開sitekeyは `TURNSTILE_SITE_KEY`。
+- `/work/` のメール表示は `KAITORI_EMAIL`、Turnstile秘密鍵は `TURNSTILE_SECRET`。これらの値をGit、HTML、JS、JSON-LD、ログ、計測へ置かない。公開sitekeyは `TURNSTILE_SITE_KEY`。
+- 上記のTurnstile保護は `/work/` の既存表示・コピー導線に適用する。`/kaitori/` は利用者に普通に見える `mailto:` を主導線とする。サイト全体の同意制御を守る `Cache-Control: no-transform` を維持するためCloudflareのEmail Address Obfuscationは適用されず、このためだけのJavaScript難読化は追加しない。
 - Productionの許可originは `https://shimarisu-fudosan.com`。Previewで検証するときだけ、その環境の `KAITORI_ORIGIN` に完全一致の `https://<branch>.shimarisu-site.pages.dev` を設定し、専用widgetとPreview用Secretを使う。
 - GETではメールを返さない。POSTのorigin、Siteverifyのsuccess・hostname・actionを検査。全応答no-store / noindex。入力token・返却emailのログ禁止。
 - Turnstileは表示ボタン操作後だけ読み込む。解析同意拒否・GPCでも表示とコピーは利用できる。Clipboard失敗時は選択可能なreadonly欄を残す。
 - Production前にhub・tools・flagship・PDF・日付・Typing・メール動作・iPhone実機を人間レビューする。2026-09-30、iPhone実機（Turnstile、実メール表示、コピー→実メーラー貼り付け、再認証、表示）をPASS。desktop実ブラウザ200%確認はオーナー判断で省略し、Production進行を承認。
 - Market Observer正本は `market-observer/00_core/sites.yaml`。生成されたtrackerを編集せず、`tools/site.py install/check` を使う。email copyは査定成立ではない。
+- `/kaitori/` では同意後の到達、メールリンククリック、DAKE経由時の検証済み `app_id` だけを計測する。DAKE内の利用状況、ファイル情報、入力内容、端末情報は計測しない。
 - 公開確認・仕様根拠・未検証事項は `docs/WORK_RELEASE_REVIEW.md` に記録する。
 - 2026-09-30: 内容・設計のHuman Reviewは採用。Turnstile設定・解析UI整理の最新状態は `docs/WORK_TURNSTILE_REVIEW.md`。Production main反映はiPhone実機とdesktop実ブラウザ200%の最終確認後。
 - 公開Varsは `wrangler.toml` の `[vars]`（Production）と `[env.preview.vars]`。本番Varsの適用は最終Gate後のProduction deployと同時に行う。

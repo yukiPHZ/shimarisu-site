@@ -18,6 +18,7 @@ const htmlFiles = [
   "vacant-house/kanri-fuzen-tokutei/index.html", "vacant-house/leave-unmanaged/index.html",
   "vacant-house/property-tax/index.html", "vacant-house/remaining-items/index.html",
   "vacant-house/sell-as-is/index.html",
+  "kaitori/index.html",
 ];
 
 htmlFiles.push('work/index.html','work/tools/index.html',...require('./work-content.cjs').articles.map(a=>'work/'+a.slug+'/index.html'));
@@ -33,7 +34,7 @@ const vacantArticleFiles = [
 ];
 
 test("all canonical pages install consent-safe Market Observer runtime", () => {
-  assert.equal(htmlFiles.length, 38);
+  assert.equal(htmlFiles.length, 39);
   for (const file of htmlFiles) {
     const html = read(file);
     assert.match(html, /<body data-market-page="[a-z0-9_]+" data-market-content-type="[a-z0-9_]+">/, file);
@@ -46,7 +47,7 @@ test("all canonical pages install consent-safe Market Observer runtime", () => {
     assert.match(html, /\/assets\/market-observer\/market-observer\.js/, file);
     assert.match(html, /\/assets\/market-observer\/consent-banner\.js/, file);
     assert.match(html, /\/js\/shimarisu-market-observer\.config\.js/, file);
-    assert.match(html, /\/js\/shimarisu-observation\.js\?v=20260826-consent-ui/, file);
+    assert.match(html, /\/js\/shimarisu-observation\.js\?v=[a-z0-9-]+/, file);
   }
 });
 
@@ -71,8 +72,8 @@ test("all local links and assets resolve inside public", () => {
   assert.deepEqual(missing, []);
 });
 
-test("canonical routes and sitemap stay aligned at 38 URLs", () => {
-  const canonicalUrls = htmlFiles.map((file) => {
+test("38 indexable canonical routes stay aligned with sitemap", () => {
+  const canonicalUrls = htmlFiles.filter((file) => !/<meta\b[^>]*name=["']robots["'][^>]*content=["'][^"']*noindex/i.test(read(file))).map((file) => {
     const match = read(file).match(/<link rel="canonical" href="([^"]+)"/);
     assert.ok(match, file);
     return match[1];
@@ -112,10 +113,11 @@ test("vacant-house pages keep valid schema and the existing author identity", ()
   }
 });
 
-test("vacant-house cluster does not introduce a direct sales CTA", () => {
+test("vacant-house cluster links quietly to the single kaitori canonical", () => {
   for (const file of ["vacant-house/index.html", ...vacantArticleFiles]) {
     const html = read(file);
-    assert.equal((html.match(/sakurayk\.notion\.site/g) || []).length, 1, file);
+    assert.equal((html.match(/href="\/kaitori\/"/g) || []).length, 1, file);
+    assert.doesNotMatch(html, /sakurayk\.notion\.site/, file);
     assert.doesNotMatch(html, /査定はこちら|今すぐ相談|空き家買取を依頼|残置物あり買取/, file);
   }
 });
@@ -123,11 +125,11 @@ test("vacant-house cluster does not introduce a direct sales CTA", () => {
 test("only approved CTA aliases are installed", () => {
   const combined = htmlFiles.map(read).join("\n");
   const ids = [...combined.matchAll(/data-market-cta-id="([a-z0-9_]+)"/g)].map((match) => match[1]);
-  assert.deepEqual(new Set(ids), new Set(['author_profile','personal_site','kaitori_contact','kaitori_footer',...require('./work-content.cjs').tools.map(t=>'tool_'+t.id),'work_related','work_hub','work_tools']));
+  assert.deepEqual(new Set(ids), new Set(['author_profile','personal_site','kaitori_contact','kaitori_footer','kaitori_email_open',...require('./work-content.cjs').tools.map(t=>'tool_'+t.id),'work_related','work_hub','work_tools']));
   assert.equal(ids.filter((id) => id === "author_profile").length, 31);
   assert.equal(ids.filter((id) => id === "personal_site").length, 1);
   assert.equal(ids.filter((id) => id === "kaitori_contact").length, 1);
-  assert.equal(ids.filter((id) => id === "kaitori_footer").length, 38);
+  assert.equal(ids.filter((id) => id === "kaitori_footer").length, 39);
 });
 
 test("share integration emits only fixed success aliases", () => {
@@ -235,7 +237,7 @@ function loadAdapter(consentState, options = {}) {
     closest(selector) { return selector === "[data-market-cta-id]" && this.dataset.marketCtaId ? this : null; }
   }
   const document = {
-    body: { dataset: { marketPage: "used_house_road_access", marketContentType: "used_house_article" } },
+    body: { dataset: { marketPage: options.routeId || "used_house_road_access", marketContentType: options.contentType || "used_house_article", ...(options.appId ? { marketSourceApp: options.appId } : {}) } },
     querySelector(selector) {
       return selector === "#market-observer-consent-status" ? status : null;
     },
@@ -322,4 +324,15 @@ test("granted sends one page_view and only approved CTA/share actions", () => {
     share_target: "os_share",
     content_variant: "used_house_article",
   });
+});
+
+test("kaitori arrival sends only the validated DAKE app id as view_item", () => {
+  const harness = loadAdapter("granted", { routeId: "shimarisu_kaitori", contentType: "kaitori_page", appId: "dake_pdf_merge" });
+  assert.deepEqual(JSON.parse(JSON.stringify(harness.calls.track)), [{
+    name: "view_item",
+    parameters: { product_id: "dake_pdf_merge", item_category: "dake_app_source" },
+  }]);
+
+  const invalid = loadAdapter("granted", { routeId: "shimarisu_kaitori", contentType: "kaitori_page", appId: "PDF Merge" });
+  assert.deepEqual(invalid.calls.track, []);
 });

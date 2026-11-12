@@ -9,6 +9,8 @@
   Cache-Control: no-transform
 /dake
   Cache-Control: no-transform
+/kaitori/
+  Cache-Control: no-transform
 /used-house/
   Cache-Control: no-transform
 /used-house/appraisal-check/

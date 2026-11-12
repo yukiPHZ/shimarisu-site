@@ -58,6 +58,11 @@
     };
   }
 
+  function sourceAppId() {
+    const value = pageRoot && pageRoot.dataset.marketSourceApp;
+    return typeof value === "string" && /^[a-z0-9_]{3,80}$/.test(value) ? value : "";
+  }
+
   function bindTrackedActions(tracker, page) {
     root.document.addEventListener("click", (event) => {
       const target = event.target instanceof Element ? event.target.closest("[data-market-cta-id]") : null;
@@ -102,6 +107,10 @@
     });
     if (!result.ok) return;
     tracker.trackPageView(page);
+    const appId = sourceAppId();
+    if (page.route_id === "shimarisu_kaitori" && appId) {
+      tracker.track("view_item", { product_id: appId, item_category: "dake_app_source" });
+    }
     bindTrackedActions(tracker, page);
   }
 

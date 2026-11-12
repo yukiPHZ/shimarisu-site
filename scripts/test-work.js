@@ -1,11 +1,11 @@
-const test=require('node:test');const assert=require('node:assert/strict');const fs=require('node:fs');const path=require('node:path');
+const test=require('node:test');const assert=require('node:assert/strict');const fs=require('node:fs');const path=require('node:path');const vm=require('node:vm');
 const {articles,tools}=require('./work-content.cjs');const root=path.resolve(__dirname,'../public');
 test('canonical HTML, sitemap, local links and styles resolve',()=>{
  const walk=dir=>fs.readdirSync(dir,{withFileTypes:true}).flatMap(e=>e.isDirectory()?walk(path.join(dir,e.name)):[path.join(dir,e.name)]);
  const files=walk(root);const canonical=[];
  for(const file of files.filter(f=>f.endsWith('.html'))){
   const h=fs.readFileSync(file,'utf8');const c=h.match(/rel="canonical" href="([^"]+)"/);
-  if(!c)continue;canonical.push(c[1]);
+  if(!c)continue;if(!/<meta\b[^>]*name=["']robots["'][^>]*content=["'][^"']*noindex/i.test(h))canonical.push(c[1]);
   for(const match of h.matchAll(/(?:href|src)="([^"]+)"/g)){
    const value=match[1];if(/^(?:https?:|mailto:|data:|tel:|#)/.test(value))continue;
    const pathname=new URL(value,c[1]).pathname;const target=path.join(root,decodeURIComponent(pathname));
@@ -33,8 +33,9 @@ test('static email UI contains no address, secret, token logging or deprecated c
  const api=fs.readFileSync(path.join(__dirname,'../functions/api/kaitori-email.js'),'utf8');assert.doesNotMatch(api,/console\.|Access-Control-Allow-Origin/);
 });
 test('profile permits exactly canonical work paths and fixed event aliases',()=>{
- const p=JSON.parse(fs.readFileSync(path.join(root,'assets/market-observer/generated/shimarisu_fudosan.profile.json'),'utf8'));
+ const context={};context.window=context;vm.createContext(context);vm.runInContext(fs.readFileSync(path.join(root,'assets/market-observer/generated/runtime-package.js'),'utf8'),context);const p=context.MarketObserverRuntimePackage.profiles.shimarisu_fudosan;
  for(const route of ['shimarisu_work_home','shimarisu_work_tools',...articles.map(a=>a.route)])assert.ok(p.aliases.route_ids.includes(route),route);
- for(const alias of [...tools.map(t=>'tool_'+t.id),'kaitori_email_reveal','kaitori_email_copy'])assert.ok(p.aliases.cta_ids.includes(alias),alias);
+ for(const alias of [...tools.map(t=>'tool_'+t.id),'kaitori_email_reveal','kaitori_email_copy','kaitori_email_open'])assert.ok(p.aliases.cta_ids.includes(alias),alias);
+ assert.ok(p.aliases.route_ids.includes('shimarisu_kaitori'));assert.ok(p.allowed_events.includes('view_item'));assert.ok(p.production_path_policy.values.includes('/kaitori/'));
  assert.equal(p.production_path_policy.mode,'exact');assert.equal(p.production_path_policy.values.filter(p=>p.startsWith('/work/')).length,14);
 });
