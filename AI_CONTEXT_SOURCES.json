@@ -1,7 +1,7 @@
 {
   "product": "しまりす不動産",
   "profile": "web",
-  "standards_version": "1.0.0-rc",
+  "standards_version": "1.0.0",
   "sections": [
     {"output": "Purpose", "source": "ORIGINAL.md", "heading": "サイトの目的"},
     {"output": "Audience", "source": "ORIGINAL.md", "heading": "対象ユーザー"},

@@ -1,13 +1,13 @@
 <!--
 AUTO-GENERATED FILE
 DO NOT EDIT MANUALLY
-Content hash: 937c12bbb6cb34df
+Content hash: 61b6f489c0aeadb4
 -->
 
 # AI Context: しまりす不動産
 
 - Profile: `web`
-- Standards version: `1.0.0-rc`
+- Standards version: `1.0.0`
 
 ## Purpose
 
@@ -51,7 +51,7 @@ Content hash: 937c12bbb6cb34df
 
 ## Next
 
-- Phase 6で複数Web製品にも共通化できると判明した事項だけをstandardsへ戻し、dakeappで再実証する。
+- 通常保守では製品固有正本と `peakheadz-standards` v1を参照し、必要な検査だけを実行する。
 
 ## Known Issues
 

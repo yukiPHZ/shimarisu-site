@@ -9,7 +9,7 @@
 
 ## Next
 
-- Phase 6で複数Web製品にも共通化できると判明した事項だけをstandardsへ戻し、dakeappで再実証する。
+- 通常保守では製品固有正本と `peakheadz-standards` v1を参照し、必要な検査だけを実行する。
 
 ## Known Issues
 
