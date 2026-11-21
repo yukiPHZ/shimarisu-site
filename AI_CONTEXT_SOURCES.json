@@ -1,0 +1,29 @@
+{
+  "product": "しまりす不動産",
+  "profile": "web",
+  "standards_version": "1.0.0-rc",
+  "sections": [
+    {"output": "Purpose", "source": "ORIGINAL.md", "heading": "サイトの目的"},
+    {"output": "Audience", "source": "ORIGINAL.md", "heading": "対象ユーザー"},
+    {"output": "Must Keep", "source": "ORIGINAL.md", "heading": "守るべき主要機能"},
+    {"output": "Important Routes", "source": "ORIGINAL.md", "heading": "守るべき導線"},
+    {"output": "Important Rules", "source": "ORIGINAL.md", "heading": "変更してはいけない核"},
+    {"output": "Current State", "source": "STATE.md", "heading": "Current State"},
+    {"output": "Next", "source": "STATE.md", "heading": "Next"},
+    {"output": "Known Issues", "source": "STATE.md", "heading": "Known Issues"}
+  ],
+  "quality_check_command": "python ../peakheadz-standards/tools/quality_check.py . --profile web",
+  "source_references": [
+    "AGENTS.md",
+    "ORIGINAL.md",
+    "README.md",
+    "STATE.md",
+    "../peakheadz-standards/common/AI_WORKFLOW.md",
+    "../peakheadz-standards/common/UX_WRITING.md",
+    "../peakheadz-standards/common/BRANDING.md",
+    "../peakheadz-standards/web/QUALITY.md",
+    "../peakheadz-standards/web/UI.md",
+    "../peakheadz-standards/web/FOOTER.md",
+    "../peakheadz-standards/web/DEPLOY.md"
+  ]
+}

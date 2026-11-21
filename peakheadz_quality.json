@@ -1,0 +1,43 @@
+{
+  "profile": "web",
+  "required_files": [
+    "AGENTS.md",
+    "ORIGINAL.md",
+    "README.md",
+    "STATE.md",
+    "AI_CONTEXT.md",
+    "AI_CONTEXT_SOURCES.json",
+    "wrangler.toml",
+    "public/index.html",
+    "public/favicon.ico",
+    "public/manifest.webmanifest",
+    "public/assets/favicon/favicon.svg",
+    "public/assets/favicon/apple-touch-icon.png",
+    "public/assets/favicon/icon-192.png",
+    "public/assets/favicon/icon-512.png",
+    "public/robots.txt",
+    "public/sitemap.xml"
+  ],
+  "scan_globs": [
+    "public/**/*.html",
+    "public/**/*.js"
+  ],
+  "user_text_globs": [
+    "public/**/*.html"
+  ],
+  "required_text": [
+    {"path": "README.md", "text": "Production source is `public/`", "label": "Production source"},
+    {"path": "wrangler.toml", "text": "pages_build_output_dir = \"public\"", "label": "Cloudflare Pages output"},
+    {"path": "public/index.html", "text": "rel=\"apple-touch-icon\"", "label": "apple-touch-icon link"},
+    {"path": "public/index.html", "text": "rel=\"manifest\"", "label": "manifest link"},
+    {"path": "public/index.html", "text": "© 2026 しまりす不動産", "label": "製品固有footer credit"},
+    {"path": "public/robots.txt", "text": "Sitemap: https://shimarisu-fudosan.com/sitemap.xml", "label": "robots sitemap"}
+  ],
+  "required_text_globs": [
+    {"glob": "public/**/*.html", "text": "<html lang=\"ja\">", "label": "Japanese lang"},
+    {"glob": "public/**/*.html", "text": "<title>", "label": "title"},
+    {"glob": "public/**/*.html", "text": "name=\"description\"", "label": "meta description"},
+    {"glob": "public/**/*.html", "text": "rel=\"canonical\"", "label": "canonical"},
+    {"glob": "public/**/*.html", "text": "<footer", "label": "footer"}
+  ]
+}
