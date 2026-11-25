@@ -1,0 +1,35 @@
+{
+  "sites": [
+    {
+      "project": "dake-send-site",
+      "url": "https://send.dakeapp.com/",
+      "httpStatus": 200,
+      "backlink": "https://shimarisu-fudosan.com/work/large-files-send/",
+      "backlinkFound": true,
+      "targetStatus": 200,
+      "deploymentId": "3f8f1f94-24bd-4faf-91d0-df88d3e0cc80",
+      "deploymentURL": "https://3f8f1f94.dake-send-site.pages.dev",
+      "listingStatus": "2 minutes ago",
+      "commit": "704ea9da6a10ce21b4c69b12c72e5ec1006a7d23"
+    },
+    {
+      "project": "dake-typing-site",
+      "url": "https://typing.dakeapp.com/real-estate/",
+      "httpStatus": 200,
+      "backlink": "https://shimarisu-fudosan.com/work/real-estate-typing/",
+      "backlinkFound": true,
+      "targetStatus": 200,
+      "deploymentId": "7567bfdf-7530-4dde-94b6-79e546432b56",
+      "deploymentURL": "https://7567bfdf.dake-typing-site.pages.dev",
+      "listingStatus": "2 minutes ago",
+      "commit": "9d482f89e13fd4f551857b21861261bb32776407"
+    }
+  ],
+  "searchConsole": "NOT VERIFIED: no connected Search Console tool, configured service credential environment, or gcloud CLI",
+  "cleanupWorkerRedeployed": false,
+  "publisherMutated": false,
+  "publicSitemap": {
+    "status": 200,
+    "workURLs": 14
+  }
+}

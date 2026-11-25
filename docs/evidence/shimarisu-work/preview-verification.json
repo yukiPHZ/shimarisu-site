@@ -1,0 +1,105 @@
+{
+  "origin": "https://work-notes.shimarisu-site.pages.dev",
+  "checks": [
+    {
+      "path": "/work/",
+      "status": 200,
+      "noindex": true
+    },
+    {
+      "path": "/work/tools/",
+      "status": 200,
+      "noindex": true
+    },
+    {
+      "path": "/work/pdf-merge-real-estate/",
+      "status": 200,
+      "noindex": true
+    },
+    {
+      "path": "/work/pdf-select-pages/",
+      "status": 200,
+      "noindex": true
+    },
+    {
+      "path": "/work/pdf-split-every-page/",
+      "status": 200,
+      "noindex": true
+    },
+    {
+      "path": "/work/pdf-file-name-organize/",
+      "status": 200,
+      "noindex": true
+    },
+    {
+      "path": "/work/pdf-too-large/",
+      "status": 200,
+      "noindex": true
+    },
+    {
+      "path": "/work/large-files-send/",
+      "status": 200,
+      "noindex": true
+    },
+    {
+      "path": "/work/mansion-reform-schedule/",
+      "status": 200,
+      "noindex": true
+    },
+    {
+      "path": "/work/contract-settlement-days/",
+      "status": 200,
+      "noindex": true
+    },
+    {
+      "path": "/work/building-age-check/",
+      "status": 200,
+      "noindex": true
+    },
+    {
+      "path": "/work/month-crossing-calendar/",
+      "status": 200,
+      "noindex": true
+    },
+    {
+      "path": "/work/real-estate-typing/",
+      "status": 200,
+      "noindex": true
+    },
+    {
+      "path": "/work/contract-pdf-workflow/",
+      "status": 200,
+      "noindex": true
+    },
+    {
+      "path": "/api/kaitori-email",
+      "method": "GET",
+      "status": 405,
+      "noStore": true
+    },
+    {
+      "path": "/api/kaitori-email",
+      "method": "POST",
+      "status": 403,
+      "noStore": true
+    },
+    {
+      "path": "/api/kaitori-email",
+      "method": "POST",
+      "status": 403,
+      "noStore": true
+    },
+    {
+      "path": "/api/kaitori-config",
+      "method": "GET",
+      "status": 503,
+      "noStore": true
+    },
+    {
+      "productionHome": 200,
+      "workLinkPublished": false
+    }
+  ],
+  "realTurnstile": "NOT VERIFIED: widget/secrets awaiting approval",
+  "production": "unchanged"
+}

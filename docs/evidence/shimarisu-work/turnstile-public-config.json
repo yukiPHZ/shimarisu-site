@@ -1,0 +1,10 @@
+{
+  "production": {
+    "TURNSTILE_SITE_KEY": "0x4AAAAAAFKKgJEkbiLmW0vr",
+    "KAITORI_ORIGIN": "https://shimarisu-fudosan.com"
+  },
+  "preview": {
+    "TURNSTILE_SITE_KEY": "0x4AAAAAAFKKgjIjftTk4ezU",
+    "KAITORI_ORIGIN": "https://work-notes.shimarisu-site.pages.dev"
+  }
+}
